@@ -7,7 +7,7 @@
 USE `football-club`;
 
 -- 删除 name_en 列
-ALTER TABLE `football_player` DROP COLUMN `name_en`;
+
 
 -- 为每个字段添加注释（逐列 MODIFY COLUMN 以便使用 COMMENT 子句）
 ALTER TABLE `football_player`
