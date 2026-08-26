@@ -60,7 +60,16 @@
             <groupId>com.fc</groupId>
             <artifactId>fc-generator</artifactId>
         </dependency>
-
+        <!-- 财务管理模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-finance</artifactId>
+        </dependency>
+        <!-- 球员档案模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-pp</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
