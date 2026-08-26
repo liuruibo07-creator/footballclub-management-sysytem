@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.fc.common.annotation.Log;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import com.fc.common.core.controller.BaseController;
 import com.fc.common.core.domain.AjaxResult;
 import com.fc.common.enums.BusinessType;
@@ -20,8 +22,6 @@ import com.fc.match.domain.Match;
 import com.fc.match.service.IMatchService;
 import com.fc.common.utils.poi.ExcelUtil;
 import com.fc.common.core.page.TableDataInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
 /**
  * 比赛管理Controller

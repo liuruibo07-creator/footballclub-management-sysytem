@@ -37,6 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="competitionName != null  and competitionName != ''"> and competition_name like concat('%', #{competitionName}, '%')</if>
         </where>
+        order by match_date desc
     </select>
     
     <select id="selectMatchById" parameterType="Long" resultMap="MatchResult">

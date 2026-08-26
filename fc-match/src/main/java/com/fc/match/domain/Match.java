@@ -27,7 +27,6 @@ public class Match extends BaseEntity
     private Long id;
 
     /** 赛季 */
-    @Excel(name = "赛季")
     private String season;
 
     /** 轮次 */
@@ -35,7 +34,7 @@ public class Match extends BaseEntity
     private Integer roundNo;
 
     /** 比赛时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "比赛时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date matchDate;
 
@@ -64,7 +63,6 @@ public class Match extends BaseEntity
     private String venue;
 
     /** 赛事类型 */
-    @Excel(name = "赛事类型")
     private String competitionType;
 
     /** 赛事名称 */
@@ -72,12 +70,9 @@ public class Match extends BaseEntity
     private String competitionName;
 
     /** 数据源 */
-    @Excel(name = "数据源")
     private String sourceUrl;
 
-    /** 数据源截至日期 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "数据源截至日期", width = 30, dateFormat = "yyyy-MM-dd")
+    /** 数据源截止时间 */
     private Date sourceAsOf;
 
     /** 删除标记 */
