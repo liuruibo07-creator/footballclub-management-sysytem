@@ -62,10 +62,7 @@
         </dependency>
 
         <!-- 球员模块-->
-        <dependency>
-            <groupId>com.fc</groupId>
-            <artifactId>fc-player</artifactId>
-        </dependency>
+
 
         <!-- 伤病模块 -->
         <dependency>

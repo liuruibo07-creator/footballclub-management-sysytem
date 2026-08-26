@@ -171,11 +171,7 @@
             </dependency>
 
             <!-- 球员模块-->
-            <dependency>
-                <groupId>com.fc</groupId>
-                <artifactId>fc-player</artifactId>
-                <version>${fc.version}</version>
-            </dependency>
+
 
             <!-- 伤病模块 -->
             <dependency>
@@ -194,7 +190,7 @@
         <module>fc-quartz</module>
         <module>fc-generator</module>
         <module>fc-common</module>
-        <module>fc-player</module>
+
         <module>football-injury</module>
     </modules>
     <packaging>pom</packaging>
