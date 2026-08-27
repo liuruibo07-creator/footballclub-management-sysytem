@@ -7,6 +7,7 @@ import com.fc.common.core.page.TableDataInfo;
 import com.fc.common.enums.BusinessType;
 import com.fc.common.utils.poi.ExcelUtil;
 import com.fc.pp.domain.FootballPlayer;
+import com.fc.pp.domain.vo.FootballPlayerVo;
 import com.fc.pp.service.IFootballPlayerService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +41,7 @@ public class FootballPlayerController extends BaseController
     public TableDataInfo list(FootballPlayer footballPlayer)
     {
         startPage();
-        List<FootballPlayer> list = footballPlayerService.selectFootballPlayerList(footballPlayer);
+        List<FootballPlayerVo> list = footballPlayerService.selectFootballPlayerList(footballPlayer);
         return getDataTable(list);
     }
 
@@ -53,8 +54,8 @@ public class FootballPlayerController extends BaseController
     @ApiOperation("导出球员档案列表")
     public void export(HttpServletResponse response, FootballPlayer footballPlayer)
     {
-        List<FootballPlayer> list = footballPlayerService.selectFootballPlayerList(footballPlayer);
-        ExcelUtil<FootballPlayer> util = new ExcelUtil<FootballPlayer>(FootballPlayer.class);
+        List<FootballPlayerVo> list = footballPlayerService.selectFootballPlayerList(footballPlayer);
+        ExcelUtil<FootballPlayerVo> util = new ExcelUtil<FootballPlayerVo>(FootballPlayerVo.class);
         util.exportExcel(response, list, "球员档案数据");
     }
 

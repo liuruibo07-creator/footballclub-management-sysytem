@@ -2,6 +2,7 @@ package com.fc.pp.mapper;
 
 import java.util.List;
 import com.fc.pp.domain.FootballPlayer;
+import com.fc.pp.domain.vo.FootballPlayerVo;
 
 /**
  * 球员档案Mapper接口
@@ -17,7 +18,7 @@ public interface FootballPlayerMapper
      * @param id 球员档案主键
      * @return 球员档案
      */
-    public FootballPlayer selectFootballPlayerById(Long id);
+    public FootballPlayerVo selectFootballPlayerById(Long id);
 
     /**
      * 查询球员档案列表
@@ -25,7 +26,7 @@ public interface FootballPlayerMapper
      * @param footballPlayer 球员档案
      * @return 球员档案集合
      */
-    public List<FootballPlayer> selectFootballPlayerList(FootballPlayer footballPlayer);
+    public List<FootballPlayerVo> selectFootballPlayerList(FootballPlayer footballPlayer);
 
     /**
      * 新增球员档案
