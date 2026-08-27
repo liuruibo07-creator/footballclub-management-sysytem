@@ -125,10 +125,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteFootballPlayerById" parameterType="Long">
         delete from football_player where id = #{id}
     </delete>
-
+    <!-- 批量删除球员档案 -->
     <delete id="deleteFootballPlayerByIds" parameterType="String">
         delete from football_player where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
