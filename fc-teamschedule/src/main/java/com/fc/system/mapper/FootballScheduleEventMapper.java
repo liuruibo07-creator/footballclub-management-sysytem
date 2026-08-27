@@ -1,6 +1,7 @@
 package com.fc.system.mapper;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import com.fc.system.domain.FootballScheduleEvent;
 import com.fc.system.domain.FootballSchedulePlayer;
 
@@ -58,7 +59,7 @@ public interface FootballScheduleEventMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteFootballScheduleEventByIds(Long[] ids);
+    public int deleteFootballScheduleEventByIds(@Param("ids") Long[] ids);
 
     /**
      * 批量删除日程参与人
@@ -66,7 +67,7 @@ public interface FootballScheduleEventMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteFootballSchedulePlayerByEventIds(Long[] ids);
+    public int deleteFootballSchedulePlayerByEventIds(@Param("ids") Long[] ids);
     
     /**
      * 批量新增日程参与人
@@ -74,7 +75,7 @@ public interface FootballScheduleEventMapper
      * @param footballSchedulePlayerList 日程参与人列表
      * @return 结果
      */
-    public int batchFootballSchedulePlayer(List<FootballSchedulePlayer> footballSchedulePlayerList);
+    public int batchFootballSchedulePlayer(@Param("list") List<FootballSchedulePlayer> footballSchedulePlayerList);
     
 
     /**

@@ -162,6 +162,28 @@ public class FootballScheduleEvent extends BaseEntity
         return delFlag;
     }
 
+    /** 开始时间范围查询（委托到params Map） */
+    public String getBeginStartTime()
+    {
+        return (String) getParams().get("beginStartTime");
+    }
+
+    public void setBeginStartTime(String beginStartTime)
+    {
+        getParams().put("beginStartTime", beginStartTime);
+    }
+
+    /** 结束时间范围查询（委托到params Map） */
+    public String getEndStartTime()
+    {
+        return (String) getParams().get("endStartTime");
+    }
+
+    public void setEndStartTime(String endStartTime)
+    {
+        getParams().put("endStartTime", endStartTime);
+    }
+
     public List<FootballSchedulePlayer> getFootballSchedulePlayerList()
     {
         return footballSchedulePlayerList;
