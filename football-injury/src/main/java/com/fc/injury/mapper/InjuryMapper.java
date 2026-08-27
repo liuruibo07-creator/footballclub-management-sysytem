@@ -1,7 +1,9 @@
 package com.fc.injury.mapper;
 
 import java.util.List;
+import java.util.Map;
 import com.fc.injury.domain.Injury;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 伤病康复Mapper接口
@@ -58,4 +60,25 @@ public interface InjuryMapper
      * @return 结果
      */
     public int deleteInjuryByIds(Long[] ids);
+
+    /**
+     * 查询球员下拉列表（id, name_cn）
+     */
+    public List<Map<String, Object>> selectPlayerOptions();
+
+    /**
+     * 按康复状态统计人数
+     * status为null时统计未康复（0,1,2），不为null时统计指定状态
+     */
+    public int countByStatus(@Param("status") Integer status);
+
+    /**
+     * 统计本月已康复人数
+     */
+    public int countRecoveredThisMonth();
+
+    /**
+     * 根据sys_user的user_id查对应的球员id
+     */
+    public Long selectPlayerIdByUserId(@Param("userId") Long userId);
 }

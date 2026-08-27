@@ -110,4 +110,50 @@ public class InjuryController extends BaseController
     {
         return toAjax(injuryService.deleteInjuryByIds(ids));
     }
+
+    /**
+     * 获取球员下拉列表
+     */
+    @PreAuthorize("@ss.hasPermi('injury:injury:list')")
+    @GetMapping("/playerOptions")
+    @ApiOperation("获取球员下拉列表")
+    public AjaxResult playerOptions()
+    {
+        return success(injuryService.selectPlayerOptions());
+    }
+
+    /**
+     * 获取伤病统计数据（伤病管理页面顶部卡片）
+     */
+    @PreAuthorize("@ss.hasPermi('injury:injury:list')")
+    @GetMapping("/stats")
+    @ApiOperation("获取伤病统计数据")
+    public AjaxResult stats()
+    {
+        return success(injuryService.selectInjuryStats());
+    }
+
+    /**
+     * 获取仪表盘伤病预警数据
+     */
+    @GetMapping("/dashboardStats")
+    @ApiOperation("获取仪表盘伤病预警数据")
+    public AjaxResult dashboardStats()
+    {
+        return success(injuryService.selectDashboardStats());
+    }
+
+    /**
+     * 按球员ID查询伤病历史（球员详情页用）
+     */
+    @PreAuthorize("@ss.hasPermi('injury:injury:list')")
+    @GetMapping("/byPlayer/{playerId}")
+    @ApiOperation("按球员ID查询伤病历史")
+    public TableDataInfo listByPlayer(@PathVariable Long playerId)
+    {
+        Injury query = new Injury();
+        query.setPlayerId(playerId);
+        List<Injury> list = injuryService.selectInjuryList(query);
+        return getDataTable(list);
+    }
 }

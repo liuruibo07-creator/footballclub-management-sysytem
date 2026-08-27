@@ -1,6 +1,7 @@
 package com.fc.injury.service;
 
 import java.util.List;
+import java.util.Map;
 import com.fc.injury.domain.Injury;
 
 /**
@@ -58,4 +59,19 @@ public interface IInjuryService
      * @return 结果
      */
     public int deleteInjuryById(Long id);
+
+    /**
+     * 查询球员下拉列表
+     */
+    public List<Map<String, Object>> selectPlayerOptions();
+
+    /**
+     * 查询伤病统计数据
+     */
+    public Map<String, Object> selectInjuryStats();
+
+    /**
+     * 查询仪表盘伤病预警数据
+     */
+    public Map<String, Object> selectDashboardStats();
 }

@@ -109,4 +109,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectPlayerOptions" resultType="java.util.HashMap">
+        select id, name_cn as name from football_player where del_flag = '0' order by name_cn
+    </select>
+
+    <select id="countByStatus" resultType="int">
+        select count(*) from football_injury where del_flag = '0'
+        <if test="status != null"> and recovery_status = #{status} </if>
+        <if test="status == null"> and recovery_status in (0,1,2) </if>
+    </select>
+
+    <select id="countRecoveredThisMonth" resultType="int">
+        select count(*) from football_injury
+        where del_flag = '0' and recovery_status = 3
+        and date_format(actual_return_date, '%Y-%m') = date_format(now(), '%Y-%m')
+    </select>
+
+    <select id="selectPlayerIdByUserId" resultType="Long">
+        select id from football_player where user_id = #{userId} and del_flag = '0' limit 1
+    </select>
 </mapper>
