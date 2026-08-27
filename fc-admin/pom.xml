@@ -61,18 +61,6 @@
             <artifactId>fc-generator</artifactId>
         </dependency>
 
-        <!--模块  比赛管理-->
-        <dependency>
-            <groupId>com.fc</groupId>
-            <artifactId>fc-match</artifactId>
-        </dependency>
-
-         <!--XFileStorage 文件存储-->
-        <!--<dependency>
-            <groupId>org.dromara.x-file-storage</groupId>
-            <artifactId>x-file-storage-spring-boot-starter</artifactId>
-        </dependency>-->
-
     </dependencies>
 
     <build>
