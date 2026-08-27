@@ -170,6 +170,11 @@
                 <version>${fc.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-teamschedule</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -180,6 +185,7 @@
         <module>fc-quartz</module>
         <module>fc-generator</module>
         <module>fc-common</module>
+        <module>fc-teamschedule</module>
     </modules>
     <packaging>pom</packaging>
 

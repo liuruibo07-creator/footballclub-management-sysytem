@@ -61,6 +61,10 @@
             <artifactId>fc-generator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-teamschedule</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
