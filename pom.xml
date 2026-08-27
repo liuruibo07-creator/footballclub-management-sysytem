@@ -169,8 +169,27 @@
                 <artifactId>fc-common</artifactId>
                 <version>${fc.version}</version>
             </dependency>
+            <!-- 财务模块-->
+            <dependency>
+                    <groupId>com.fc</groupId>
+                    <artifactId>fc-finance</artifactId>
+                    <version>${fc.version}</version>
+            </dependency>
+            <!-- 伤病模块-->
+            <dependency>
+                    <groupId>com.fc</groupId>
+                    <artifactId>football-injury</artifactId>
+                    <version>${fc.version}</version>
+            </dependency>
+            <!-- 球队模块-->
+            <dependency>
+                    <groupId>com.fc</groupId>
+                    <artifactId>fc-pp</artifactId>
+                    <version>${fc.version}</version>
+            </dependency>
 
-        </dependencies>
+
+               </dependencies>
     </dependencyManagement>
 
     <modules>
@@ -180,6 +199,9 @@
         <module>fc-quartz</module>
         <module>fc-generator</module>
         <module>fc-common</module>
+        <module>fc-finance</module>
+        <module>football-injury</module>
+        <module>fc-pp</module>
     </modules>
     <packaging>pom</packaging>
 

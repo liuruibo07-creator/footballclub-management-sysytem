@@ -11,16 +11,22 @@
 
     <artifactId>fc-finance</artifactId>
 
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <description>
+        财务收支模块
+    </description>
+
     <dependencies>
-                <dependency>
-                    <groupId>com.fc</groupId>
-                    <artifactId>fc-framework</artifactId>
-                </dependency>
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-common</artifactId>
+        </dependency>
+
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-framework</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

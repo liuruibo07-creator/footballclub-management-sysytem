@@ -61,6 +61,23 @@
             <artifactId>fc-generator</artifactId>
         </dependency>
 
+        <!-- 财务模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-finance</artifactId>
+        </dependency>
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-common</artifactId>
+        </dependency>
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-pp</artifactId>
+        </dependency>
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>football-injury</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
