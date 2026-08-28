@@ -30,6 +30,21 @@ public interface FootballScheduleEventMapper
     public List<FootballScheduleEvent> selectFootballScheduleEventList(FootballScheduleEvent footballScheduleEvent);
 
     /**
+     * 查询首页待办日程（已安排、按开始时间升序）
+     *
+     * @param limit 最大返回数量
+     * @return 待办日程集合
+     */
+    public List<FootballScheduleEvent> selectPendingScheduleEvents(@Param("limit") int limit);
+
+    /**
+     * 统计已安排日程数量
+     *
+     * @return 已安排日程总数
+     */
+    public long countPendingScheduleEvents();
+
+    /**
      * 新增球队日程
      * 
      * @param footballScheduleEvent 球队日程

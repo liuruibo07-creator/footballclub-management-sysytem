@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fc.system.domain.FootballSchedulePlayer;
 import com.fc.system.mapper.FootballScheduleEventMapper;
 import com.fc.system.domain.FootballScheduleEvent;
+import com.fc.system.domain.vo.PendingScheduleSummary;
 import com.fc.system.service.IFootballScheduleEventService;
 
 /**
@@ -46,6 +47,20 @@ public class FootballScheduleEventServiceImpl implements IFootballScheduleEventS
     public List<FootballScheduleEvent> selectFootballScheduleEventList(FootballScheduleEvent footballScheduleEvent)
     {
         return footballScheduleEventMapper.selectFootballScheduleEventList(footballScheduleEvent);
+    }
+
+    /**
+     * 查询首页待办日程汇总
+     *
+     * @return 待办日程汇总
+     */
+    @Override
+    public PendingScheduleSummary selectPendingScheduleSummary()
+    {
+        final int homePageLimit = 3;
+        List<FootballScheduleEvent> events = footballScheduleEventMapper.selectPendingScheduleEvents(homePageLimit);
+        long total = footballScheduleEventMapper.countPendingScheduleEvents();
+        return new PendingScheduleSummary(events, total);
     }
 
     /**

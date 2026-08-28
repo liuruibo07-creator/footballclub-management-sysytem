@@ -2,6 +2,7 @@ package com.fc.system.service;
 
 import java.util.List;
 import com.fc.system.domain.FootballScheduleEvent;
+import com.fc.system.domain.vo.PendingScheduleSummary;
 
 /**
  * 球队日程Service接口
@@ -26,6 +27,13 @@ public interface IFootballScheduleEventService
      * @return 球队日程集合
      */
     public List<FootballScheduleEvent> selectFootballScheduleEventList(FootballScheduleEvent footballScheduleEvent);
+
+    /**
+     * 查询首页待办日程汇总
+     *
+     * @return 待办日程汇总
+     */
+    public PendingScheduleSummary selectPendingScheduleSummary();
 
     /**
      * 新增球队日程
