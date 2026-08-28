@@ -1,6 +1,7 @@
 package com.fc.system.mapper;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import com.fc.system.domain.FootballTraining;
 import com.fc.system.domain.FootballTrainingPlayer;
 
@@ -58,7 +59,7 @@ public interface FootballTrainingMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteFootballTrainingByIds(Long[] ids);
+    public int deleteFootballTrainingByIds(@Param("array") Long[] ids);
 
     /**
      * 批量删除训练参与及出勤
@@ -66,7 +67,7 @@ public interface FootballTrainingMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteFootballTrainingPlayerByTrainingIds(Long[] ids);
+    public int deleteFootballTrainingPlayerByTrainingIds(@Param("array") Long[] ids);
     
     /**
      * 批量新增训练参与及出勤
@@ -74,7 +75,7 @@ public interface FootballTrainingMapper
      * @param footballTrainingPlayerList 训练参与及出勤列表
      * @return 结果
      */
-    public int batchFootballTrainingPlayer(List<FootballTrainingPlayer> footballTrainingPlayerList);
+    public int batchFootballTrainingPlayer(@Param("list") List<FootballTrainingPlayer> footballTrainingPlayerList);
     
 
     /**
