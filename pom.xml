@@ -201,6 +201,12 @@
                 <artifactId>fc-match</artifactId>
                 <version>${fc.version}</version>
             </dependency>
+            <!--赛季数据统计模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-stat</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
             <!-- 球队日程模块-->
             <dependency>
                 <groupId>com.fc</groupId>
@@ -229,6 +235,7 @@
         <module>fc-teamschedule</module>
         <module>football-injury</module>
         <module>fc-trainingmanagement</module>
+        <module>fc-stat</module>
     </modules>
     <packaging>pom</packaging>
 

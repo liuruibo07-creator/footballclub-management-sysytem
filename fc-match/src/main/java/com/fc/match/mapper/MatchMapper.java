@@ -13,6 +13,31 @@ import com.fc.match.domain.Match;
 public interface MatchMapper 
 {
     /**
+     * 查询最新联赛赛季
+     */
+    public String selectLatestLeagueSeason();
+
+    /**
+     * 查询指定赛季所有已完赛的联赛比赛
+     */
+    public List<Match> selectCompletedLeagueMatches(@Param("season") String season);
+
+    /**
+     * 查询扣分
+     */
+    public Integer selectPointsDeduction(@Param("season") String season, @Param("competitionName") String competitionName);
+
+    /**
+     * 查询快照联赛排名
+     */
+    public Integer selectLeagueRank(@Param("season") String season, @Param("competitionName") String competitionName);
+
+    /**
+     * 查询快照联赛球队数
+     */
+    public Integer selectLeagueTeamCount(@Param("season") String season, @Param("competitionName") String competitionName);
+
+    /**
      * 查询比赛管理
      * 
      * @param id 比赛管理主键
@@ -27,24 +52,6 @@ public interface MatchMapper
      * @return 比赛管理集合
      */
     public List<Match> selectMatchList(Match match);
-
-    /** 查询当前联赛赛季 */
-    public String selectLatestLeagueSeason();
-
-    /** 查询指定赛季所有已完成联赛 */
-    public List<Match> selectCompletedLeagueMatches(@Param("season") String season);
-
-    /** 查询赛季纪律扣分 */
-    public Integer selectPointsDeduction(@Param("season") String season,
-                                         @Param("competitionName") String competitionName);
-
-    /** 查询赛季官方排名快照 */
-    public Integer selectLeagueRank(@Param("season") String season,
-                                    @Param("competitionName") String competitionName);
-
-    /** 查询联赛球队总数快照 */
-    public Integer selectLeagueTeamCount(@Param("season") String season,
-                                         @Param("competitionName") String competitionName);
 
     /**
      * 新增比赛管理
