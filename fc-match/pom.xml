@@ -23,6 +23,10 @@
             <artifactId>fc-framework</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-common</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>1.6.2</version>
