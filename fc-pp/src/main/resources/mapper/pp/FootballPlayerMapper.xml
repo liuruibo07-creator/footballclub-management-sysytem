@@ -26,25 +26,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <resultMap type="com.fc.pp.domain.vo.FootballPlayerVo" id="FootballPlayerVoResult" extends="FootballPlayerResult">
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+
     <sql id="selectFootballPlayerVo">
-        select id, jersey_number, name_cn, position, nationality, birth_date, height, preferred_foot, status, registration_note, user_id, source_url, source_as_of, create_by, create_time, update_by, update_time, del_flag, remark from football_player
+        select p.id, p.jersey_number, p.name_cn, p.position, p.nationality, p.birth_date, p.height, p.preferred_foot, p.status, p.registration_note, p.user_id, p.source_url, p.source_as_of, p.create_by, p.create_time, p.update_by, p.update_time, p.del_flag, p.remark, c.end_date
+        from football_player p
+        left join football_player_contract c on p.id = c.player_id
     </sql>
 
-    <select id="selectFootballPlayerList" parameterType="FootballPlayer" resultMap="FootballPlayerResult">
+    <select id="selectFootballPlayerList" parameterType="FootballPlayer" resultMap="FootballPlayerVoResult">
         <include refid="selectFootballPlayerVo"/>
-        <where>  
-            <if test="nameCn != null  and nameCn != ''"> and name_cn = #{nameCn}</if>
-            <if test="position != null  and position != ''"> and position = #{position}</if>
-            <if test="nationality != null  and nationality != ''"> and nationality = #{nationality}</if>
-            <if test="birthDate != null "> and birth_date = #{birthDate}</if>
-            <if test="preferredFoot != null  and preferredFoot != ''"> and preferred_foot = #{preferredFoot}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+        <where>
+            <if test="nameCn != null  and nameCn != ''"> and p.name_cn = #{nameCn}</if>
+            <if test="position != null  and position != ''"> and p.position = #{position}</if>
+            <if test="nationality != null  and nationality != ''"> and p.nationality = #{nationality}</if>
+            <if test="birthDate != null "> and p.birth_date = #{birthDate}</if>
+            <if test="preferredFoot != null  and preferredFoot != ''"> and p.preferred_foot = #{preferredFoot}</if>
+            <if test="status != null  and status != ''"> and p.status = #{status}</if>
         </where>
     </select>
-    
-    <select id="selectFootballPlayerById" parameterType="Long" resultMap="FootballPlayerResult">
+
+    <select id="selectFootballPlayerById" parameterType="Long" resultMap="FootballPlayerVoResult">
         <include refid="selectFootballPlayerVo"/>
-        where id = #{id}
+        where p.id = #{id}
     </select>
         
     <insert id="insertFootballPlayer" parameterType="FootballPlayer" useGeneratedKeys="true" keyProperty="id">
@@ -119,10 +125,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteFootballPlayerById" parameterType="Long">
         delete from football_player where id = #{id}
     </delete>
-
+    <!-- 批量删除球员档案 -->
     <delete id="deleteFootballPlayerByIds" parameterType="String">
         delete from football_player where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>

@@ -1,12 +1,14 @@
 package com.fc.pp.service.impl;
 
-import java.util.List;
 import com.fc.common.utils.DateUtils;
+import com.fc.pp.domain.FootballPlayer;
+import com.fc.pp.domain.vo.FootballPlayerVo;
+import com.fc.pp.mapper.FootballPlayerMapper;
+import com.fc.pp.service.IFootballPlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.fc.pp.mapper.FootballPlayerMapper;
-import com.fc.pp.domain.FootballPlayer;
-import com.fc.pp.service.IFootballPlayerService;
+
+import java.util.List;
 
 /**
  * 球员档案Service业务层处理
@@ -15,7 +17,7 @@ import com.fc.pp.service.IFootballPlayerService;
  * @date 2026-08-26
  */
 @Service
-public class FootballPlayerServiceImpl implements IFootballPlayerService 
+public class FootballPlayerServiceImpl implements IFootballPlayerService
 {
     @Autowired
     private FootballPlayerMapper footballPlayerMapper;
@@ -27,7 +29,7 @@ public class FootballPlayerServiceImpl implements IFootballPlayerService
      * @return 球员档案
      */
     @Override
-    public FootballPlayer selectFootballPlayerById(Long id)
+    public FootballPlayerVo selectFootballPlayerById(Long id)
     {
         return footballPlayerMapper.selectFootballPlayerById(id);
     }
@@ -39,7 +41,7 @@ public class FootballPlayerServiceImpl implements IFootballPlayerService
      * @return 球员档案
      */
     @Override
-    public List<FootballPlayer> selectFootballPlayerList(FootballPlayer footballPlayer)
+    public List<FootballPlayerVo> selectFootballPlayerList(FootballPlayer footballPlayer)
     {
         return footballPlayerMapper.selectFootballPlayerList(footballPlayer);
     }

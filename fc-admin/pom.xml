@@ -49,6 +49,36 @@
             <artifactId>fc-framework</artifactId>
         </dependency>
 
+        <!-- 伤病康复模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>football-injury</artifactId>
+        </dependency>
+
+        <!-- 财务模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-finance</artifactId>
+        </dependency>
+
+        <!-- 比赛模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-match</artifactId>
+        </dependency>
+
+        <!-- PP模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-pp</artifactId>
+        </dependency>
+
+        <!-- 球队日程模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-teamschedule</artifactId>
+        </dependency>
+
         <!-- 定时任务-->
         <dependency>
             <groupId>com.fc</groupId>
@@ -61,23 +91,6 @@
             <artifactId>fc-generator</artifactId>
         </dependency>
 
-        <!-- 财务模块-->
-        <dependency>
-            <groupId>com.fc</groupId>
-            <artifactId>fc-finance</artifactId>
-        </dependency>
-        <dependency>
-                <groupId>com.fc</groupId>
-                <artifactId>fc-common</artifactId>
-        </dependency>
-        <dependency>
-                <groupId>com.fc</groupId>
-                <artifactId>fc-pp</artifactId>
-        </dependency>
-        <dependency>
-                <groupId>com.fc</groupId>
-                <artifactId>football-injury</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

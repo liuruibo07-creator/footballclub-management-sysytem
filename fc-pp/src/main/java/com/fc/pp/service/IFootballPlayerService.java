@@ -1,7 +1,9 @@
 package com.fc.pp.service;
 
-import java.util.List;
 import com.fc.pp.domain.FootballPlayer;
+import com.fc.pp.domain.vo.FootballPlayerVo;
+
+import java.util.List;
 
 /**
  * 球员档案Service接口
@@ -9,7 +11,7 @@ import com.fc.pp.domain.FootballPlayer;
  * @author ruoyi
  * @date 2026-08-26
  */
-public interface IFootballPlayerService 
+public interface IFootballPlayerService
 {
     /**
      * 查询球员档案
@@ -17,7 +19,7 @@ public interface IFootballPlayerService
      * @param id 球员档案主键
      * @return 球员档案
      */
-    public FootballPlayer selectFootballPlayerById(Long id);
+    public FootballPlayerVo selectFootballPlayerById(Long id);
 
     /**
      * 查询球员档案列表
@@ -25,7 +27,7 @@ public interface IFootballPlayerService
      * @param footballPlayer 球员档案
      * @return 球员档案集合
      */
-    public List<FootballPlayer> selectFootballPlayerList(FootballPlayer footballPlayer);
+    public List<FootballPlayerVo> selectFootballPlayerList(FootballPlayer footballPlayer);
 
     /**
      * 新增球员档案
