@@ -34,6 +34,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null "> and update_time = #{updateTime}</if>
         </where>
     </select>
+
+    <select id="selectFinanceSummary" resultType="com.fc.finance.domain.vo.FinanceSummary">
+        select
+            coalesce(sum(case when record_type = 0 then amount else 0 end), 0) as totalIncome,
+            coalesce(sum(case when record_type = 1 then amount else 0 end), 0) as totalExpense,
+            coalesce(sum(case when record_type = 0 then amount when record_type = 1 then -amount else 0 end), 0) as netBalance
+        from football_finance_record
+        where del_flag = '0'
+    </select>
     
     <select id="selectFinanceRecordById" parameterType="Long" resultMap="FinanceRecordResult">
         <include refid="selectFinanceRecordVo"/>

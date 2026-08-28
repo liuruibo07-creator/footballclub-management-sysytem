@@ -16,7 +16,7 @@
         <fc.version>3.8.7</fc.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <druid.version>1.2.20</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
@@ -135,6 +135,13 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-admin</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
+
+
             <!-- 定时任务-->
             <dependency>
                 <groupId>com.fc</groupId>
@@ -170,6 +177,33 @@
                 <version>${fc.version}</version>
             </dependency>
 
+            <!-- 财务模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-finance</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
+
+            <!-- 比赛管理模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-pp</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
+
+            <!-- 伤病模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>football-injury</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
+
+            <!-- 赛事模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-match</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -180,6 +214,10 @@
         <module>fc-quartz</module>
         <module>fc-generator</module>
         <module>fc-common</module>
+        <module>fc-finance</module>
+        <module>fc-pp</module>
+        <module>football-injury</module>
+        <module>fc-match</module>
     </modules>
     <packaging>pom</packaging>
 

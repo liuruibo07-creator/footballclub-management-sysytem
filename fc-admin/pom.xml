@@ -42,7 +42,15 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-common</artifactId>
+        </dependency>
 
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-quartz</artifactId>
+        </dependency>
         <!-- 核心模块-->
         <dependency>
             <groupId>com.fc</groupId>
@@ -60,7 +68,27 @@
             <groupId>com.fc</groupId>
             <artifactId>fc-generator</artifactId>
         </dependency>
-
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-finance</artifactId>
+        </dependency>
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-pp</artifactId>
+        </dependency>
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>football-injury</artifactId>
+        </dependency>
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-match</artifactId>
+        </dependency>
+<!--        文件-->
+        <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-system</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

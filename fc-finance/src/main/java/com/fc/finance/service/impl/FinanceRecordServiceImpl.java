@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.fc.finance.mapper.FinanceRecordMapper;
 import com.fc.finance.domain.FinanceRecord;
+import com.fc.finance.domain.vo.FinanceSummary;
 import com.fc.finance.service.IFinanceRecordService;
 
 /**
@@ -42,6 +43,17 @@ public class FinanceRecordServiceImpl implements IFinanceRecordService
     public List<FinanceRecord> selectFinanceRecordList(FinanceRecord financeRecord)
     {
         return financeRecordMapper.selectFinanceRecordList(financeRecord);
+    }
+
+    /**
+     * 查询全部有效财务记录的汇总数据
+     *
+     * @return 财务汇总
+     */
+    @Override
+    public FinanceSummary selectFinanceSummary()
+    {
+        return financeRecordMapper.selectFinanceSummary();
     }
 
     /**
