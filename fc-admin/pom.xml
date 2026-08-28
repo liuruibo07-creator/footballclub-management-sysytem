@@ -86,6 +86,11 @@
             <groupId>com.fc</groupId>
             <artifactId>fc-match</artifactId>
         </dependency>
+        <!--训练管理模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-trainingmanagement</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

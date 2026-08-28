@@ -16,5 +16,16 @@
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <!--训练管理模块-->
+    <!--依赖-->
+    <dependencies>
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-framework</artifactId>
+        </dependency>
+    </dependencies>
 </project>

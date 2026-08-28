@@ -200,6 +200,12 @@
                 <artifactId>fc-match</artifactId>
                 <version>${fc.version}</version>
             </dependency>
+            <!--训练管理模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-trainingmanagement</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
