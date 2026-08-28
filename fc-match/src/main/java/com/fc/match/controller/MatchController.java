@@ -27,7 +27,7 @@ import com.fc.common.core.page.TableDataInfo;
  * 比赛管理Controller
  * 
  * @author yr
- * @date 2026-08-26
+ * @date 2026-08-28
  */
 @RestController
 @RequestMapping("/match/match")

@@ -7,7 +7,7 @@ import com.fc.match.domain.Match;
  * 比赛管理Service接口
  * 
  * @author yr
- * @date 2026-08-26
+ * @date 2026-08-28
  */
 public interface IMatchService 
 {

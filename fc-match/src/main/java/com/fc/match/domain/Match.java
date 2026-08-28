@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
  * 比赛管理对象 football_match
  * 
  * @author yr
- * @date 2026-08-26
+ * @date 2026-08-28
  */
 @Data
 @NoArgsConstructor
@@ -31,10 +31,10 @@ public class Match extends BaseEntity
 
     /** 轮次 */
     @Excel(name = "轮次")
-    private Integer roundNo;
+    private Long roundNo;
 
     /** 比赛时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "比赛时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date matchDate;
 
@@ -48,22 +48,22 @@ public class Match extends BaseEntity
 
     /** 主队得分 */
     @Excel(name = "主队得分")
-    private Integer homeScore;
+    private Long homeScore;
 
     /** 客队得分 */
     @Excel(name = "客队得分")
-    private Integer awayScore;
+    private Long awayScore;
 
     /** 状态 */
     @Excel(name = "状态")
-    private String status;
+    private Long status;
 
     /** 场地 */
     @Excel(name = "场地")
     private String venue;
 
     /** 赛事类型 */
-    private String competitionType;
+    private Long competitionType;
 
     /** 赛事名称 */
     @Excel(name = "赛事名称")
@@ -72,10 +72,10 @@ public class Match extends BaseEntity
     /** 数据源 */
     private String sourceUrl;
 
-    /** 数据源截止时间 */
+    /** 数据源截至日期 */
     private Date sourceAsOf;
 
-    /** 删除标记 */
+    /** $column.columnComment */
     private String delFlag;
 
 

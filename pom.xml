@@ -170,6 +170,7 @@
                 <version>${fc.version}</version>
             </dependency>
 
+            <!-- 伤病康复模块-->
             <dependency>
                 <groupId>com.fc</groupId>
                 <artifactId>fc-teamschedule</artifactId>
@@ -200,6 +201,12 @@
                 <artifactId>fc-match</artifactId>
                 <version>${fc.version}</version>
             </dependency>
+            <!-- 球队日程模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-teamschedule</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
             <!--训练管理模块-->
             <dependency>
                 <groupId>com.fc</groupId>
@@ -216,6 +223,9 @@
         <module>fc-quartz</module>
         <module>fc-generator</module>
         <module>fc-common</module>
+        <module>fc-finance</module>
+        <module>fc-match</module>
+        <module>fc-pp</module>
         <module>fc-teamschedule</module>
         <module>football-injury</module>
         <module>fc-trainingmanagement</module>

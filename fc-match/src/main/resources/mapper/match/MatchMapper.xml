@@ -34,10 +34,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectMatchList" parameterType="Match" resultMap="MatchResult">
         <include refid="selectMatchVo"/>
         <where>  
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="status != null "> and status = #{status}</if>
             <if test="competitionName != null  and competitionName != ''"> and competition_name like concat('%', #{competitionName}, '%')</if>
         </where>
-        order by match_date desc
     </select>
     
     <select id="selectMatchById" parameterType="Long" resultMap="MatchResult">
@@ -55,9 +54,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="awayTeam != null and awayTeam != ''">away_team,</if>
             <if test="homeScore != null">home_score,</if>
             <if test="awayScore != null">away_score,</if>
-            <if test="status != null and status != ''">status,</if>
+            <if test="status != null">status,</if>
             <if test="venue != null">venue,</if>
-            <if test="competitionType != null and competitionType != ''">competition_type,</if>
+            <if test="competitionType != null">competition_type,</if>
             <if test="competitionName != null and competitionName != ''">competition_name,</if>
             <if test="sourceUrl != null">source_url,</if>
             <if test="sourceAsOf != null">source_as_of,</if>
@@ -76,9 +75,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="awayTeam != null and awayTeam != ''">#{awayTeam},</if>
             <if test="homeScore != null">#{homeScore},</if>
             <if test="awayScore != null">#{awayScore},</if>
-            <if test="status != null and status != ''">#{status},</if>
+            <if test="status != null">#{status},</if>
             <if test="venue != null">#{venue},</if>
-            <if test="competitionType != null and competitionType != ''">#{competitionType},</if>
+            <if test="competitionType != null">#{competitionType},</if>
             <if test="competitionName != null and competitionName != ''">#{competitionName},</if>
             <if test="sourceUrl != null">#{sourceUrl},</if>
             <if test="sourceAsOf != null">#{sourceAsOf},</if>
@@ -101,9 +100,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="awayTeam != null and awayTeam != ''">away_team = #{awayTeam},</if>
             <if test="homeScore != null">home_score = #{homeScore},</if>
             <if test="awayScore != null">away_score = #{awayScore},</if>
-            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="status != null">status = #{status},</if>
             <if test="venue != null">venue = #{venue},</if>
-            <if test="competitionType != null and competitionType != ''">competition_type = #{competitionType},</if>
+            <if test="competitionType != null">competition_type = #{competitionType},</if>
             <if test="competitionName != null and competitionName != ''">competition_name = #{competitionName},</if>
             <if test="sourceUrl != null">source_url = #{sourceUrl},</if>
             <if test="sourceAsOf != null">source_as_of = #{sourceAsOf},</if>
