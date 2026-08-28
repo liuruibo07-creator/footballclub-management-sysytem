@@ -27,10 +27,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <!-- 查询比赛信息 -->
     <sql id="selectMatchVo">
         select id, season, round_no, match_date, home_team, away_team, home_score, away_score, status, venue, competition_type, competition_name, source_url, source_as_of, create_by, create_time, update_by, update_time, del_flag, remark from football_match
     </sql>
 
+    <!-- 查询比赛列表 -->
     <select id="selectMatchList" parameterType="Match" resultMap="MatchResult">
         <include refid="selectMatchVo"/>
         <where>  
@@ -39,12 +41,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
         order by match_date desc
     </select>
-    
+
+    <!-- 查询比赛信息 -->
     <select id="selectMatchById" parameterType="Long" resultMap="MatchResult">
         <include refid="selectMatchVo"/>
         where id = #{id}
     </select>
-        
+
+    <!-- 新增比赛信息 -->
     <insert id="insertMatch" parameterType="Match" useGeneratedKeys="true" keyProperty="id">
         insert into football_match
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -91,6 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <!-- 修改比赛信息 -->
     <update id="updateMatch" parameterType="Match">
         update football_match
         <trim prefix="SET" suffixOverrides=",">
@@ -117,11 +122,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
+    <!-- 删除比赛信息 -->
     <delete id="deleteMatchById" parameterType="Long">
         delete from football_match where id = #{id}
     </delete>
 
-    <delete id="deleteMatchByIds" parameterType="String">
+    <!-- 删除比赛信息 -->
+    <delete id="deleteMatchByIds">
         delete from football_match where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
