@@ -38,6 +38,17 @@ public class MatchController extends BaseController
     private IMatchService matchService;
 
     /**
+     * 查询首页赛季概览
+     */
+    @PreAuthorize("@ss.hasPermi('match:match:list')")
+    @GetMapping("/season-overview")
+    @ApiOperation("查询首页赛季概览")
+    public AjaxResult seasonOverview()
+    {
+        return success(matchService.selectSeasonOverview());
+    }
+
+    /**
      * 查询比赛管理列表
      */
     @PreAuthorize("@ss.hasPermi('match:match:list')")

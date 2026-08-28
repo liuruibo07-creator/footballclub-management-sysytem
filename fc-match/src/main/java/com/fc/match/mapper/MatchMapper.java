@@ -1,6 +1,7 @@
 package com.fc.match.mapper;
 
 import java.util.List;
+import java.util.Map;
 import com.fc.match.domain.Match;
 
 /**
@@ -11,6 +12,15 @@ import com.fc.match.domain.Match;
  */
 public interface MatchMapper 
 {
+    /**
+     * 查询赛季统计概览（胜/平/负/积分）
+     */
+    public Map<String, Object> selectSeasonStats();
+
+    /**
+     * 查询最近5场已完赛比赛
+     */
+    public List<Map<String, Object>> selectRecentMatches();
     /**
      * 查询比赛管理
      * 
