@@ -53,6 +53,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and status = #{status}</if>
         </where>
     </select>
+
+    <select id="selectPendingScheduleEvents" resultMap="FootballScheduleEventResult">
+        <include refid="selectFootballScheduleEventVo"/>
+        where status = '0'
+          and del_flag = '0'
+        order by start_time asc, id asc
+        limit #{limit}
+    </select>
+
+    <select id="countPendingScheduleEvents" resultType="long">
+        select count(1)
+        from football_schedule_event
+        where status = '0'
+          and del_flag = '0'
+    </select>
     
     <select id="selectFootballScheduleEventById" parameterType="Long" resultMap="FootballScheduleEventFootballSchedulePlayerResult">
         select a.id, a.match_id, a.training_id, a.title, a.event_type, a.start_time, a.end_time, a.location, a.description, a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.remark,

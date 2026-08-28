@@ -47,6 +47,16 @@ public class FootballScheduleEventController extends BaseController
     }
 
     /**
+     * 查询首页待办日程（最多三条）
+     */
+    @PreAuthorize("@ss.hasPermi('system:event:list')")
+    @GetMapping("/pending")
+    public AjaxResult pending()
+    {
+        return success(footballScheduleEventService.selectPendingScheduleSummary());
+    }
+
+    /**
      * 导出球队日程列表
      */
     @PreAuthorize("@ss.hasPermi('system:event:export')")
