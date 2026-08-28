@@ -28,6 +28,10 @@
             <groupId>com.fc</groupId>
             <artifactId>fc-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-framework</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
