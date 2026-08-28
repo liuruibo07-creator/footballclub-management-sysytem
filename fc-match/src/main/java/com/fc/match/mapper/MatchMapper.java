@@ -1,7 +1,7 @@
 package com.fc.match.mapper;
 
 import java.util.List;
-import java.util.Map;
+import org.apache.ibatis.annotations.Param;
 import com.fc.match.domain.Match;
 
 /**
@@ -13,14 +13,30 @@ import com.fc.match.domain.Match;
 public interface MatchMapper 
 {
     /**
-     * 查询赛季统计概览（胜/平/负/积分）
+     * 查询最新联赛赛季
      */
-    public Map<String, Object> selectSeasonStats();
+    public String selectLatestLeagueSeason();
 
     /**
-     * 查询最近5场已完赛比赛
+     * 查询指定赛季所有已完赛的联赛比赛
      */
-    public List<Map<String, Object>> selectRecentMatches();
+    public List<Match> selectCompletedLeagueMatches(@Param("season") String season);
+
+    /**
+     * 查询扣分
+     */
+    public Integer selectPointsDeduction(@Param("season") String season, @Param("competitionName") String competitionName);
+
+    /**
+     * 查询快照联赛排名
+     */
+    public Integer selectLeagueRank(@Param("season") String season, @Param("competitionName") String competitionName);
+
+    /**
+     * 查询快照联赛球队数
+     */
+    public Integer selectLeagueTeamCount(@Param("season") String season, @Param("competitionName") String competitionName);
+
     /**
      * 查询比赛管理
      * 

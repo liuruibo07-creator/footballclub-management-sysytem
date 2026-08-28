@@ -86,6 +86,11 @@
             <groupId>com.fc</groupId>
             <artifactId>fc-match</artifactId>
         </dependency>
+        <!--赛季数据统计模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-stat</artifactId>
+        </dependency>
         <!--训练管理模块-->
         <dependency>
             <groupId>com.fc</groupId>

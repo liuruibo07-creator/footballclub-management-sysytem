@@ -1,7 +1,6 @@
 package com.fc.match.service;
 
 import java.util.List;
-import java.util.Map;
 import com.fc.match.domain.Match;
 import com.fc.match.domain.vo.SeasonOverview;
 
@@ -13,10 +12,6 @@ import com.fc.match.domain.vo.SeasonOverview;
  */
 public interface IMatchService 
 {
-    /**
-     * 查询首页赛季概览
-     */
-    public Map<String, Object> selectSeasonOverview();
     /**
      * 查询比赛管理
      * 
