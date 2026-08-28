@@ -2,6 +2,7 @@ package com.fc.finance.service;
 
 import java.util.List;
 import com.fc.finance.domain.FinanceRecord;
+import com.fc.finance.domain.vo.FinanceSummary;
 
 /**
  * 财务收支Service接口
@@ -26,6 +27,13 @@ public interface IFinanceRecordService
      * @return 财务收支集合
      */
     public List<FinanceRecord> selectFinanceRecordList(FinanceRecord financeRecord);
+
+    /**
+     * 查询全部有效财务记录的汇总数据
+     *
+     * @return 财务汇总
+     */
+    public FinanceSummary selectFinanceSummary();
 
     /**
      * 新增财务收支

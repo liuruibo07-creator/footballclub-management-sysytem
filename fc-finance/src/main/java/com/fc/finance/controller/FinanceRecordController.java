@@ -51,6 +51,17 @@ public class FinanceRecordController extends BaseController
     }
 
     /**
+     * 查询全部有效财务记录的汇总数据
+     */
+    @PreAuthorize("@ss.hasPermi('finance:finance:list')")
+    @GetMapping("/summary")
+    @ApiOperation("查询财务收支汇总")
+    public AjaxResult summary()
+    {
+        return success(financeRecordService.selectFinanceSummary());
+    }
+
+    /**
      * 导出财务收支列表
      */
     @PreAuthorize("@ss.hasPermi('finance:finance:export')")
