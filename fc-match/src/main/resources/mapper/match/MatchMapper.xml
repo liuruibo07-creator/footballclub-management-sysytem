@@ -38,6 +38,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="competitionName != null  and competitionName != ''"> and competition_name like concat('%', #{competitionName}, '%')</if>
         </where>
     </select>
+
+    <select id="selectLatestLeagueSeason" resultType="string">
+        select season
+        from football_match
+        where competition_type = 0
+          and del_flag = '0'
+        order by season desc
+        limit 1
+    </select>
+
+    <select id="selectCompletedLeagueMatches" resultMap="MatchResult">
+        <include refid="selectMatchVo"/>
+        where season = #{season}
+          and competition_type = 0
+          and status = 1
+          and home_score is not null
+          and away_score is not null
+          and del_flag = '0'
+        order by round_no asc, match_date asc, id asc
+    </select>
+
+    <select id="selectPointsDeduction" resultType="int">
+        select coalesce(max(points_deduction), 0)
+        from football_season
+        where season = #{season}
+          and competition = #{competitionName}
+    </select>
+
+    <select id="selectLeagueRank" resultType="int">
+        select league_rank
+        from football_season
+        where season = #{season}
+          and competition = #{competitionName}
+        limit 1
+    </select>
+
+    <select id="selectLeagueTeamCount" resultType="int">
+        select team_count
+        from football_season
+        where season = #{season}
+          and competition = #{competitionName}
+        limit 1
+    </select>
     
     <select id="selectMatchById" parameterType="Long" resultMap="MatchResult">
         <include refid="selectMatchVo"/>
@@ -122,7 +165,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <delete id="deleteMatchByIds" parameterType="String">
         delete from football_match where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
