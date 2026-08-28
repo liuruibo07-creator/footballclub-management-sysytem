@@ -205,6 +205,13 @@
                 <version>${fc.version}</version>
             </dependency>
 
+            <!-- 赛季数据统计模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-stat</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -220,6 +227,7 @@
         <module>fc-pp</module>
         <module>fc-teamschedule</module>
         <module>football-injury</module>
+        <module>fc-stat</module>
     </modules>
     <packaging>pom</packaging>
 

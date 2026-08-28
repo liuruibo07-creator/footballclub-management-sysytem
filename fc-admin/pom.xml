@@ -79,6 +79,12 @@
             <artifactId>fc-teamschedule</artifactId>
         </dependency>
 
+        <!-- 赛季数据统计模块-->
+        <dependency>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-stat</artifactId>
+        </dependency>
+
         <!-- 定时任务-->
         <dependency>
             <groupId>com.fc</groupId>

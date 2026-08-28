@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.stat.mapper.statMapper">
+
+    <resultMap type="stat" id="statResult">
+        <result property="id"    column="id"    />
+        <result property="playerId"    column="player_id"    />
+        <result property="season"    column="season"    />
+        <result property="competition"    column="competition"    />
+        <result property="appearances"    column="appearances"    />
+        <result property="starts"    column="starts"    />
+        <result property="minutesPlayed"    column="minutes_played"    />
+        <result property="goals"    column="goals"    />
+        <result property="assists"    column="assists"    />
+        <result property="yellowCards"    column="yellow_cards"    />
+        <result property="redCards"    column="red_cards"    />
+        <result property="statAsOf"    column="stat_as_of"    />
+        <result property="sourceUrl"    column="source_url"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="playerName"    column="player_name"    />
+        <result property="jerseyNumber"    column="jersey_number"    />
+        <result property="position"    column="position"    />
+        <result property="nationality"    column="nationality"    />
+        <result property="playerStatus"    column="player_status"    />
+    </resultMap>
+
+    <sql id="selectstatVo">
+        select s.id, s.player_id, s.season, s.competition, s.appearances, s.starts,
+               s.minutes_played, s.goals, s.assists, s.yellow_cards, s.red_cards,
+               s.stat_as_of, s.source_url, s.create_by, s.create_time, s.update_by, s.update_time, s.remark,
+               p.name_cn as player_name, p.jersey_number,
+               IFNULL(p.position, '未知') as position,
+               p.nationality,
+               IFNULL(p.status, '未知') as player_status
+        from football_player_season_stat s
+        left join football_player p on s.player_id = p.id
+    </sql>
+
+    <select id="selectstatList" parameterType="stat" resultMap="statResult">
+        <include refid="selectstatVo"/>
+        <where>
+            <if test="playerId != null "> and s.player_id = #{playerId}</if>
+            <if test="season != null  and season != ''"> and s.season = #{season}</if>
+            <if test="competition != null  and competition != ''"> and s.competition like concat('%', #{competition}, '%')</if>
+            <if test="position != null  and position != ''"> and p.position = #{position}</if>
+            <if test="playerName != null  and playerName != ''"> and p.name_cn like concat('%', #{playerName}, '%')</if>
+        </where>
+        order by s.goals desc, s.assists desc, s.appearances desc
+    </select>
+
+    <select id="selectstatById" parameterType="Long" resultMap="statResult">
+        <include refid="selectstatVo"/>
+        where s.id = #{id}
+    </select>
+
+    <!-- 排行榜：按指定指标排序 -->
+    <select id="selectStatRanking" parameterType="stat" resultMap="statResult">
+        <include refid="selectstatVo"/>
+        <where>
+            <if test="season != null and season != ''"> and s.season = #{season}</if>
+            <if test="competition != null and competition != ''"> and s.competition = #{competition}</if>
+        </where>
+        order by
+        <choose>
+            <when test="rankBy == 'goals'">s.goals desc, s.assists desc</when>
+            <when test="rankBy == 'assists'">s.assists desc, s.goals desc</when>
+            <when test="rankBy == 'minutes_played'">s.minutes_played desc</when>
+            <when test="rankBy == 'yellow_cards'">s.yellow_cards desc</when>
+            <when test="rankBy == 'appearances'">s.appearances desc</when>
+            <otherwise>s.goals desc, s.assists desc</otherwise>
+        </choose>,
+        s.appearances desc
+        limit 5
+    </select>
+
+    <!-- 球队赛季汇总 -->
+    <select id="selectTeamSeasonStats" resultMap="statResult">
+        select s.season, s.competition,
+               sum(s.appearances) as appearances,
+               sum(s.starts) as starts,
+               sum(s.minutes_played) as minutes_played,
+               sum(s.goals) as goals,
+               sum(s.assists) as assists,
+               sum(s.yellow_cards) as yellow_cards,
+               sum(s.red_cards) as red_cards
+        from football_player_season_stat s
+        <where>
+            <if test="season != null and season != ''"> and s.season = #{season}</if>
+        </where>
+        group by s.season, s.competition
+        order by s.season desc, s.competition
+    </select>
+
+    <!-- 球员对比 -->
+    <select id="selectCompareStats" resultMap="statResult">
+        <include refid="selectstatVo"/>
+        where s.player_id in
+        <foreach item="playerId" collection="playerIds" open="(" separator="," close=")">
+            #{playerId}
+        </foreach>
+        <if test="season != null and season != ''"> and s.season = #{season}</if>
+        <if test="competition != null and competition != ''"> and s.competition = #{competition}</if>
+        order by s.player_id, s.season desc
+    </select>
+
+    <!-- 球员下拉选项（查football_player表） -->
+    <select id="selectPlayerOptions" resultType="java.util.Map">
+        select id, name_cn as nameCn, jersey_number as jerseyNumber, position
+        from football_player
+        where del_flag = '0' and status = '活跃'
+        order by jersey_number
+    </select>
+
+    <insert id="insertstat" parameterType="stat">
+        insert into football_player_season_stat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="playerId != null">player_id,</if>
+            <if test="season != null">season,</if>
+            <if test="competition != null">competition,</if>
+            <if test="appearances != null">appearances,</if>
+            <if test="starts != null">starts,</if>
+            <if test="minutesPlayed != null">minutes_played,</if>
+            <if test="goals != null">goals,</if>
+            <if test="assists != null">assists,</if>
+            <if test="yellowCards != null">yellow_cards,</if>
+            <if test="redCards != null">red_cards,</if>
+            <if test="statAsOf != null">stat_as_of,</if>
+            <if test="sourceUrl != null">source_url,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="playerId != null">#{playerId},</if>
+            <if test="season != null">#{season},</if>
+            <if test="competition != null">#{competition},</if>
+            <if test="appearances != null">#{appearances},</if>
+            <if test="starts != null">#{starts},</if>
+            <if test="minutesPlayed != null">#{minutesPlayed},</if>
+            <if test="goals != null">#{goals},</if>
+            <if test="assists != null">#{assists},</if>
+            <if test="yellowCards != null">#{yellowCards},</if>
+            <if test="redCards != null">#{redCards},</if>
+            <if test="statAsOf != null">#{statAsOf},</if>
+            <if test="sourceUrl != null">#{sourceUrl},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updatestat" parameterType="stat">
+        update football_player_season_stat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="playerId != null">player_id = #{playerId},</if>
+            <if test="season != null">season = #{season},</if>
+            <if test="competition != null">competition = #{competition},</if>
+            <if test="appearances != null">appearances = #{appearances},</if>
+            <if test="starts != null">starts = #{starts},</if>
+            <if test="minutesPlayed != null">minutes_played = #{minutesPlayed},</if>
+            <if test="goals != null">goals = #{goals},</if>
+            <if test="assists != null">assists = #{assists},</if>
+            <if test="yellowCards != null">yellow_cards = #{yellowCards},</if>
+            <if test="redCards != null">red_cards = #{redCards},</if>
+            <if test="statAsOf != null">stat_as_of = #{statAsOf},</if>
+            <if test="sourceUrl != null">source_url = #{sourceUrl},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletestatById" parameterType="Long">
+        delete from football_player_season_stat where id = #{id}
+    </delete>
+
+    <delete id="deletestatByIds" parameterType="String">
+        delete from football_player_season_stat where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
