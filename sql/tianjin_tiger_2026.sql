@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS `football_season` (
   `season`          VARCHAR(9)   NOT NULL COMMENT '赛季标识',
   `competition`     VARCHAR(64)  NOT NULL COMMENT '赛事名称',
   `points_deduction` INT         NOT NULL DEFAULT 0 COMMENT '纪律扣分（正数表示扣除）',
+  `league_rank`     INT          DEFAULT NULL COMMENT '官方联赛排名快照',
+  `team_count`      INT          DEFAULT NULL COMMENT '联赛球队总数快照',
   `deduction_reason` VARCHAR(500) DEFAULT NULL COMMENT '扣分原因',
   `start_date`      DATE         DEFAULT NULL,
   `end_date`        DATE         DEFAULT NULL,
@@ -337,14 +339,15 @@ CREATE TABLE IF NOT EXISTS `football_salary_cap` (
 -- ============================================================
 
 INSERT INTO `football_season`
-(`id`,`season`,`competition`,`points_deduction`,`deduction_reason`,`start_date`,`end_date`,`status`,`source_url`,`source_as_of`,`remark`)
+(`id`,`season`,`competition`,`points_deduction`,`league_rank`,`team_count`,`deduction_reason`,`start_date`,`end_date`,`status`,`source_url`,`source_as_of`,`remark`)
 VALUES
-(1,'2026','中国足球超级联赛',10,'2026赛季开赛前纪律处罚，联赛积分扣10分','2026-03-07','2026-11-08',1,
+(1,'2026','中国足球超级联赛',10,14,16,'2026赛季开赛前纪律处罚，联赛积分扣10分','2026-03-07','2026-11-08',1,
  'https://www.tianjinfc.com/fixtures.html','2026-08-25','比赛所得积分与积分榜积分应扣除10分后展示'),
-(2,'2026','中国足球协会杯',0,NULL,'2026-06-19','2026-06-19',2,
+(2,'2026','中国足球协会杯',0,NULL,NULL,NULL,'2026-06-19','2026-06-19',2,
  'https://news.zhibo8.com/zuqiu/2026-06-19/match1982562date2026vnative.htm','2026-06-19','津门虎第4轮点球大战3-5负，总比分4-6出局')
 ON DUPLICATE KEY UPDATE
-`points_deduction`=VALUES(`points_deduction`),`deduction_reason`=VALUES(`deduction_reason`),
+`points_deduction`=VALUES(`points_deduction`),`league_rank`=VALUES(`league_rank`),`team_count`=VALUES(`team_count`),
+`deduction_reason`=VALUES(`deduction_reason`),
 `start_date`=VALUES(`start_date`),`end_date`=VALUES(`end_date`),`status`=VALUES(`status`),
 `source_url`=VALUES(`source_url`),`source_as_of`=VALUES(`source_as_of`),`remark`=VALUES(`remark`);
 

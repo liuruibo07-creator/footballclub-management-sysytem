@@ -2,6 +2,7 @@ package com.fc.match.service;
 
 import java.util.List;
 import com.fc.match.domain.Match;
+import com.fc.match.domain.vo.SeasonOverview;
 
 /**
  * 比赛管理Service接口
@@ -26,6 +27,13 @@ public interface IMatchService
      * @return 比赛管理集合
      */
     public List<Match> selectMatchList(Match match);
+
+    /**
+     * 查询首页赛季概览
+     *
+     * @return 赛季概览
+     */
+    public SeasonOverview selectSeasonOverview();
 
     /**
      * 新增比赛管理
