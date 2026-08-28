@@ -173,45 +173,46 @@
             <!-- 伤病康复模块-->
             <dependency>
                 <groupId>com.fc</groupId>
-                <artifactId>football-injury</artifactId>
+                <artifactId>fc-teamschedule</artifactId>
                 <version>${fc.version}</version>
             </dependency>
 
-            <!-- 财务模块-->
+            <!-- 足球业务模块 -->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>football-injury</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
+            <!-- 财务模块 -->
             <dependency>
                 <groupId>com.fc</groupId>
                 <artifactId>fc-finance</artifactId>
                 <version>${fc.version}</version>
             </dependency>
-
-            <!-- 比赛管理模块-->
-            <dependency>
-                <groupId>com.fc</groupId>
-                <artifactId>fc-match</artifactId>
-                <version>${fc.version}</version>
-            </dependency>
-
-            <!-- 球员档案模块-->
+            <!-- 球员档案模块 -->
             <dependency>
                 <groupId>com.fc</groupId>
                 <artifactId>fc-pp</artifactId>
                 <version>${fc.version}</version>
             </dependency>
-
+            <!--比赛管理模块-->
+            <dependency>
+                <groupId>com.fc</groupId>
+                <artifactId>fc-match</artifactId>
+                <version>${fc.version}</version>
+            </dependency>
             <!-- 球队日程模块-->
             <dependency>
                 <groupId>com.fc</groupId>
                 <artifactId>fc-teamschedule</artifactId>
                 <version>${fc.version}</version>
             </dependency>
-
-            <!-- 赛季数据统计模块-->
+            <!--训练管理模块-->
             <dependency>
                 <groupId>com.fc</groupId>
-                <artifactId>fc-stat</artifactId>
+                <artifactId>fc-trainingmanagement</artifactId>
                 <version>${fc.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
 
@@ -227,7 +228,7 @@
         <module>fc-pp</module>
         <module>fc-teamschedule</module>
         <module>football-injury</module>
-        <module>fc-stat</module>
+        <module>fc-trainingmanagement</module>
     </modules>
     <packaging>pom</packaging>
 

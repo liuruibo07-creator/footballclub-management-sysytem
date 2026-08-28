@@ -38,6 +38,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="competitionName != null  and competitionName != ''"> and competition_name like concat('%', #{competitionName}, '%')</if>
         </where>
     </select>
+
+    <select id="selectLatestLeagueSeason" resultType="string">
+        select season
+        from football_match
+        where competition_type = 0
+          and del_flag = '0'
+        order by season desc
+        limit 1
+    </select>
+
+    <select id="selectCompletedLeagueMatches" resultMap="MatchResult">
+        <include refid="selectMatchVo"/>
+        where season = #{season}
+          and competition_type = 0
+          and status = 1
+          and home_score is not null
+          and away_score is not null
+          and del_flag = '0'
+        order by round_no asc, match_date asc, id asc
+    </select>
+
+    <select id="selectPointsDeduction" resultType="int">
+        select coalesce(max(points_deduction), 0)
+        from football_season
+        where season = #{season}
+          and competition = #{competitionName}
+    </select>
+
+    <select id="selectLeagueRank" resultType="int">
+        select league_rank
+        from football_season
+        where season = #{season}
+          and competition = #{competitionName}
+        limit 1
+    </select>
+
+    <select id="selectLeagueTeamCount" resultType="int">
+        select team_count
+        from football_season
+        where season = #{season}
+          and competition = #{competitionName}
+        limit 1
+    </select>
     
     <select id="selectMatchById" parameterType="Long" resultMap="MatchResult">
         <include refid="selectMatchVo"/>
@@ -122,52 +165,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <delete id="deleteMatchByIds" parameterType="String">
         delete from football_match where id in 
-        <foreach item="id" collection="array" open="(" separator="," close=")">
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-
-    <select id="selectSeasonStats" resultType="java.util.HashMap">
-        SELECT
-            SUM(CASE
-                WHEN home_team = '天津津门虎' AND home_score &gt; away_score THEN 1
-                WHEN away_team = '天津津门虎' AND away_score &gt; home_score THEN 1
-                ELSE 0
-            END) AS wins,
-            SUM(CASE
-                WHEN (home_team = '天津津门虎' OR away_team = '天津津门虎') AND home_score = away_score THEN 1
-                ELSE 0
-            END) AS draws,
-            SUM(CASE
-                WHEN home_team = '天津津门虎' AND home_score &lt; away_score THEN 1
-                WHEN away_team = '天津津门虎' AND away_score &lt; home_score THEN 1
-                ELSE 0
-            END) AS losses,
-            COALESCE(SUM(CASE
-                WHEN home_team = '天津津门虎' AND home_score &gt; away_score THEN 3
-                WHEN away_team = '天津津门虎' AND away_score &gt; home_score THEN 3
-                WHEN (home_team = '天津津门虎' OR away_team = '天津津门虎') AND home_score = away_score THEN 1
-                ELSE 0
-            END), 0) AS points
-        FROM football_match
-        WHERE status = 1
-          AND del_flag = '0'
-          AND (home_team = '天津津门虎' OR away_team = '天津津门虎')
-    </select>
-
-    <select id="selectRecentMatches" resultType="java.util.HashMap">
-        SELECT
-            round_no AS roundNo,
-            match_date AS matchDate,
-            home_score AS homeScore,
-            away_score AS awayScore,
-            home_team AS homeTeam,
-            away_team AS awayTeam
-        FROM football_match
-        WHERE status = 1
-          AND del_flag = '0'
-          AND (home_team = '天津津门虎' OR away_team = '天津津门虎')
-        ORDER BY match_date DESC
-        LIMIT 5
-    </select>
 </mapper>
