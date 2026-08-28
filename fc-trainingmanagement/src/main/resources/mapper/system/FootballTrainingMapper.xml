@@ -35,6 +35,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="playerId"    column="sub_player_id"    />
         <result property="attendanceStatus"    column="sub_attendance_status"    />
         <result property="createTime"    column="sub_create_time"    />
+        <result property="playerName"    column="sub_player_name"    />
+        <result property="position"    column="sub_position"    />
     </resultMap>
 
     <sql id="selectFootballTrainingVo">
@@ -57,13 +59,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="startTime != null "> and a.start_time = #{startTime}</if>
             <if test="status != null "> and a.status = #{status}</if>
         </where>
+        order by a.start_time asc
     </select>
     
     <select id="selectFootballTrainingById" parameterType="Long" resultMap="FootballTrainingFootballTrainingPlayerResult">
         select a.id, a.season, a.title, a.training_type, a.start_time, a.end_time, a.venue, a.description, a.training_goal, a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.remark,
- b.id as sub_id, b.training_id as sub_training_id, b.player_id as sub_player_id, b.attendance_status as sub_attendance_status, b.create_time as sub_create_time
+ b.id as sub_id, b.training_id as sub_training_id, b.player_id as sub_player_id, b.attendance_status as sub_attendance_status, b.create_time as sub_create_time,
+ p.name_cn as sub_player_name, p.position as sub_position
         from football_training a
         left join football_training_player b on b.training_id = a.id
+        left join football_player p on p.id = b.player_id
         where a.id = #{id}
     </select>
         

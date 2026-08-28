@@ -29,6 +29,12 @@ public class FootballTrainingPlayer extends BaseEntity
     @Excel(name = "出勤状态:0待确认/1已出勤/2缺勤/3请假")
     private Long attendanceStatus;
 
+    /** 球员姓名（关联查询，非数据库字段） */
+    private String playerName;
+
+    /** 球员位置（关联查询，非数据库字段） */
+    private String position;
+
     public void setId(Long id) 
     {
         this.id = id;
@@ -64,6 +70,24 @@ public class FootballTrainingPlayer extends BaseEntity
     public Long getAttendanceStatus() 
     {
         return attendanceStatus;
+    }
+    public void setPlayerName(String playerName) 
+    {
+        this.playerName = playerName;
+    }
+
+    public String getPlayerName() 
+    {
+        return playerName;
+    }
+    public void setPosition(String position) 
+    {
+        this.position = position;
+    }
+
+    public String getPosition() 
+    {
+        return position;
     }
 
     @Override
