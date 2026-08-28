@@ -9,29 +9,23 @@
         <version>3.8.7</version>
     </parent>
 
-    <artifactId>fc-match</artifactId>
+    <artifactId>fc-teamschedule</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <!--球队日程模块-->
+    <!-- 依赖 -->
     <dependencies>
-        <dependency>
-            <groupId>com.fc</groupId>
-            <artifactId>fc-framework</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.fc</groupId>
             <artifactId>fc-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.6.2</version>
-            <scope>compile</scope>
+            <groupId>com.fc</groupId>
+            <artifactId>fc-framework</artifactId>
         </dependency>
     </dependencies>
-
 </project>
