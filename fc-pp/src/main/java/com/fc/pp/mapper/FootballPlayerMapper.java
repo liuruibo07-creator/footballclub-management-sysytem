@@ -1,0 +1,63 @@
+package com.fc.pp.mapper;
+
+import com.fc.pp.domain.FootballPlayer;
+import com.fc.pp.domain.vo.FootballPlayerVo;
+
+import java.util.List;
+
+/**
+ * 球员档案Mapper接口
+ * 
+ * @author ruoyi
+ * @date 2026-08-26
+ */
+public interface FootballPlayerMapper 
+{
+    /**
+     * 查询球员档案
+     * 
+     * @param id 球员档案主键
+     * @return 球员档案
+     */
+    public FootballPlayerVo selectFootballPlayerById(Long id);
+
+    /**
+     * 查询球员档案列表
+     * 
+     * @param footballPlayer 球员档案
+     * @return 球员档案集合
+     */
+    public List<FootballPlayerVo> selectFootballPlayerList(FootballPlayer footballPlayer);
+
+    /**
+     * 新增球员档案
+     * 
+     * @param footballPlayer 球员档案
+     * @return 结果
+     */
+    public int insertFootballPlayer(FootballPlayer footballPlayer);
+
+    /**
+     * 修改球员档案
+     * 
+     * @param footballPlayer 球员档案
+     * @return 结果
+     */
+    public int updateFootballPlayer(FootballPlayer footballPlayer);
+
+    /**
+     * 删除球员档案
+     * 
+     * @param id 球员档案主键
+     * @return 结果
+     */
+    public int deleteFootballPlayerById(Long id);
+
+    /**
+     * 批量删除球员档案
+     * 
+     * @param ids 需要删除的数据主键集合
+     * @return 结果
+     */
+    public int deleteFootballPlayerByIds(Long[] ids);
+}

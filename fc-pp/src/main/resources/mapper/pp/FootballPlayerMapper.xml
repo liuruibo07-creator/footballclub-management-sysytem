@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.pp.mapper.FootballPlayerMapper">
+    
+    <resultMap type="FootballPlayer" id="FootballPlayerResult">
+        <result property="id"    column="id"    />
+        <result property="jerseyNumber"    column="jersey_number"    />
+        <result property="nameCn"    column="name_cn"    />
+        <result property="position"    column="position"    />
+        <result property="nationality"    column="nationality"    />
+        <result property="birthDate"    column="birth_date"    />
+        <result property="height"    column="height"    />
+        <result property="preferredFoot"    column="preferred_foot"    />
+        <result property="status"    column="status"    />
+        <result property="registrationNote"    column="registration_note"    />
+        <result property="userId"    column="user_id"    />
+        <result property="sourceUrl"    column="source_url"    />
+        <result property="sourceAsOf"    column="source_as_of"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <resultMap type="com.fc.pp.domain.vo.FootballPlayerVo" id="FootballPlayerVoResult" extends="FootballPlayerResult">
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+
+    <sql id="selectFootballPlayerVo">
+        select p.id, p.jersey_number, p.name_cn, p.position, p.nationality, p.birth_date, p.height, p.preferred_foot, p.status, p.registration_note, p.user_id, p.source_url, p.source_as_of, p.create_by, p.create_time, p.update_by, p.update_time, p.del_flag, p.remark, c.end_date
+        from football_player p
+        left join football_player_contract c on p.id = c.player_id
+    </sql>
+
+    <select id="selectFootballPlayerList" parameterType="FootballPlayer" resultMap="FootballPlayerVoResult">
+        <include refid="selectFootballPlayerVo"/>
+        <where>
+            <if test="nameCn != null  and nameCn != ''"> and p.name_cn = #{nameCn}</if>
+            <if test="position != null  and position != ''"> and p.position = #{position}</if>
+            <if test="nationality != null  and nationality != ''"> and p.nationality = #{nationality}</if>
+            <if test="birthDate != null "> and p.birth_date = #{birthDate}</if>
+            <if test="preferredFoot != null  and preferredFoot != ''"> and p.preferred_foot = #{preferredFoot}</if>
+            <if test="status != null  and status != ''"> and p.status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectFootballPlayerById" parameterType="Long" resultMap="FootballPlayerVoResult">
+        <include refid="selectFootballPlayerVo"/>
+        where p.id = #{id}
+    </select>
+        
+    <insert id="insertFootballPlayer" parameterType="FootballPlayer" useGeneratedKeys="true" keyProperty="id">
+        insert into football_player
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="jerseyNumber != null">jersey_number,</if>
+            <if test="nameCn != null and nameCn != ''">name_cn,</if>
+            <if test="position != null and position != ''">position,</if>
+            <if test="nationality != null and nationality != ''">nationality,</if>
+            <if test="birthDate != null">birth_date,</if>
+            <if test="height != null">height,</if>
+            <if test="preferredFoot != null">preferred_foot,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="registrationNote != null">registration_note,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="sourceUrl != null">source_url,</if>
+            <if test="sourceAsOf != null">source_as_of,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="jerseyNumber != null">#{jerseyNumber},</if>
+            <if test="nameCn != null and nameCn != ''">#{nameCn},</if>
+            <if test="position != null and position != ''">#{position},</if>
+            <if test="nationality != null and nationality != ''">#{nationality},</if>
+            <if test="birthDate != null">#{birthDate},</if>
+            <if test="height != null">#{height},</if>
+            <if test="preferredFoot != null">#{preferredFoot},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="registrationNote != null">#{registrationNote},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="sourceUrl != null">#{sourceUrl},</if>
+            <if test="sourceAsOf != null">#{sourceAsOf},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFootballPlayer" parameterType="FootballPlayer">
+        update football_player
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="jerseyNumber != null">jersey_number = #{jerseyNumber},</if>
+            <if test="nameCn != null and nameCn != ''">name_cn = #{nameCn},</if>
+            <if test="position != null and position != ''">position = #{position},</if>
+            <if test="nationality != null and nationality != ''">nationality = #{nationality},</if>
+            <if test="birthDate != null">birth_date = #{birthDate},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="preferredFoot != null">preferred_foot = #{preferredFoot},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="registrationNote != null">registration_note = #{registrationNote},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="sourceUrl != null">source_url = #{sourceUrl},</if>
+            <if test="sourceAsOf != null">source_as_of = #{sourceAsOf},</if>
+            <if test="createBy != null and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFootballPlayerById" parameterType="Long">
+        delete from football_player where id = #{id}
+    </delete>
+    <!-- 批量删除球员档案 -->
+    <delete id="deleteFootballPlayerByIds" parameterType="String">
+        delete from football_player where id in 
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

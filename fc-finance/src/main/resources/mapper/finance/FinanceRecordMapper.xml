@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.finance.mapper.FinanceRecordMapper">
+    
+    <resultMap type="FinanceRecord" id="FinanceRecordResult">
+        <result property="id"    column="id"    />
+        <result property="season"    column="season"    />
+        <result property="recordType"    column="record_type"    />
+        <result property="category"    column="category"    />
+        <result property="amount"    column="amount"    />
+        <result property="recordDate"    column="record_date"    />
+        <result property="description"    column="description"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectFinanceRecordVo">
+        select id, season, record_type, category, amount, record_date, description, create_by, create_time, update_by, update_time, del_flag, remark from football_finance_record
+    </sql>
+
+    <select id="selectFinanceRecordList" parameterType="FinanceRecord" resultMap="FinanceRecordResult">
+        <include refid="selectFinanceRecordVo"/>
+        <where>  
+            <if test="recordType != null  and recordType != ''"> and record_type = #{recordType}</if>
+            <if test="category != null  and category != ''"> and category = #{category}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectFinanceRecordById" parameterType="Long" resultMap="FinanceRecordResult">
+        <include refid="selectFinanceRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertFinanceRecord" parameterType="FinanceRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into football_finance_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="season != null and season != ''">season,</if>
+            <if test="recordType != null and recordType != ''">record_type,</if>
+            <if test="category != null and category != ''">category,</if>
+            <if test="amount != null">amount,</if>
+            <if test="recordDate != null">record_date,</if>
+            <if test="description != null">description,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="season != null and season != ''">#{season},</if>
+            <if test="recordType != null and recordType != ''">#{recordType},</if>
+            <if test="category != null and category != ''">#{category},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="recordDate != null">#{recordDate},</if>
+            <if test="description != null">#{description},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFinanceRecord" parameterType="FinanceRecord">
+        update football_finance_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="season != null and season != ''">season = #{season},</if>
+            <if test="recordType != null and recordType != ''">record_type = #{recordType},</if>
+            <if test="category != null and category != ''">category = #{category},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="recordDate != null">record_date = #{recordDate},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFinanceRecordById" parameterType="Long">
+        delete from football_finance_record where id = #{id}
+    </delete>
+
+    <delete id="deleteFinanceRecordByIds" parameterType="String">
+        delete from football_finance_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
