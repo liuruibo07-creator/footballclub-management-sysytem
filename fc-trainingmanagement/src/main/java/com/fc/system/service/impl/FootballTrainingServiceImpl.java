@@ -58,9 +58,14 @@ public class FootballTrainingServiceImpl implements IFootballTrainingService
     @Override
     public int insertFootballTraining(FootballTraining footballTraining)
     {
+        if (StringUtils.isEmpty(footballTraining.getCreateBy()))
+        {
+            footballTraining.setCreateBy("system");
+        }
         footballTraining.setCreateTime(DateUtils.getNowDate());
         int rows = footballTrainingMapper.insertFootballTraining(footballTraining);
         insertFootballTrainingPlayer(footballTraining);
+        syncScheduleEvent(footballTraining);
         return rows;
     }
 
@@ -75,9 +80,14 @@ public class FootballTrainingServiceImpl implements IFootballTrainingService
     public int updateFootballTraining(FootballTraining footballTraining)
     {
         footballTraining.setUpdateTime(DateUtils.getNowDate());
-        footballTrainingMapper.deleteFootballTrainingPlayerByTrainingId(footballTraining.getId());
-        insertFootballTrainingPlayer(footballTraining);
-        return footballTrainingMapper.updateFootballTraining(footballTraining);
+        int rows = footballTrainingMapper.updateFootballTraining(footballTraining);
+        if (rows > 0)
+        {
+            footballTrainingMapper.deleteFootballTrainingPlayerByTrainingId(footballTraining.getId());
+            insertFootballTrainingPlayer(footballTraining);
+            syncScheduleEvent(footballTrainingMapper.selectFootballTrainingById(footballTraining.getId()));
+        }
+        return rows;
     }
 
     /**
@@ -90,6 +100,8 @@ public class FootballTrainingServiceImpl implements IFootballTrainingService
     @Override
     public int deleteFootballTrainingByIds(Long[] ids)
     {
+        footballTrainingMapper.deleteSchedulePlayerByTrainingIds(ids);
+        footballTrainingMapper.deleteScheduleEventByTrainingIds(ids);
         footballTrainingMapper.deleteFootballTrainingPlayerByTrainingIds(ids);
         return footballTrainingMapper.deleteFootballTrainingByIds(ids);
     }
@@ -104,6 +116,9 @@ public class FootballTrainingServiceImpl implements IFootballTrainingService
     @Override
     public int deleteFootballTrainingById(Long id)
     {
+        Long[] ids = new Long[] { id };
+        footballTrainingMapper.deleteSchedulePlayerByTrainingIds(ids);
+        footballTrainingMapper.deleteScheduleEventByTrainingIds(ids);
         footballTrainingMapper.deleteFootballTrainingPlayerByTrainingId(id);
         return footballTrainingMapper.deleteFootballTrainingById(id);
     }
@@ -123,6 +138,8 @@ public class FootballTrainingServiceImpl implements IFootballTrainingService
             for (FootballTrainingPlayer footballTrainingPlayer : footballTrainingPlayerList)
             {
                 footballTrainingPlayer.setTrainingId(id);
+                // 该关联表现在只保存缺席球员；出勤球员由“全体球员 - 缺席球员”推导。
+                footballTrainingPlayer.setAttendanceStatus(2L);
                 footballTrainingPlayer.setCreateTime(DateUtils.getNowDate());
                 list.add(footballTrainingPlayer);
             }
@@ -131,5 +148,18 @@ public class FootballTrainingServiceImpl implements IFootballTrainingService
                 footballTrainingMapper.batchFootballTrainingPlayer(list);
             }
         }
+    }
+
+    /**
+     * 保证每条训练都有且只有一条关联日程，并同步展示字段。
+     */
+    private void syncScheduleEvent(FootballTraining footballTraining)
+    {
+        if (footballTraining == null || footballTraining.getId() == null)
+        {
+            return;
+        }
+        footballTrainingMapper.insertScheduleEventIfAbsent(footballTraining);
+        footballTrainingMapper.updateScheduleEventByTrainingId(footballTraining);
     }
 }

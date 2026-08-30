@@ -85,4 +85,16 @@ public interface FootballTrainingMapper
      * @return 结果
      */
     public int deleteFootballTrainingPlayerByTrainingId(Long id);
+
+    /** 新增训练对应的日程（已存在时跳过） */
+    public int insertScheduleEventIfAbsent(FootballTraining footballTraining);
+
+    /** 将训练信息同步到关联日程 */
+    public int updateScheduleEventByTrainingId(FootballTraining footballTraining);
+
+    /** 删除训练关联日程的参与人数据 */
+    public int deleteSchedulePlayerByTrainingIds(@Param("array") Long[] ids);
+
+    /** 删除训练关联日程 */
+    public int deleteScheduleEventByTrainingIds(@Param("array") Long[] ids);
 }

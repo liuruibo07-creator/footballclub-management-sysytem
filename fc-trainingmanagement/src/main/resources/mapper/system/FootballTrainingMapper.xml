@@ -47,11 +47,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select a.id, a.season, a.title, a.training_type, a.start_time, a.end_time, a.venue,
                a.description, a.training_goal, a.status, a.create_by, a.create_time,
                a.update_by, a.update_time, a.del_flag, a.remark,
-               (SELECT COUNT(*) FROM football_training_player WHERE training_id = a.id) AS participant_count,
-               (SELECT CASE WHEN COUNT(*) = 0 THEN '0%'
-                            ELSE CONCAT(ROUND(SUM(CASE WHEN attendance_status = 1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)), '%')
-                       END
-                FROM football_training_player WHERE training_id = a.id) AS attendance_rate
+               (SELECT COUNT(*) FROM football_player) AS participant_count,
+               CASE WHEN a.status = 0 THEN '0%'
+                    ELSE (SELECT CASE WHEN COUNT(*) = 0 THEN '0%'
+                                      ELSE CONCAT(
+                                          ROUND(GREATEST(COUNT(*) -
+                                              (SELECT COUNT(DISTINCT tp.player_id)
+                                               FROM football_training_player tp
+                                               WHERE tp.training_id = a.id
+                                                 AND tp.attendance_status IN (2, 3)), 0) * 100.0 / COUNT(*)),
+                                          '%')
+                                 END
+                          FROM football_player)
+               END AS attendance_rate
         from football_training a
         <where>  
             <if test="title != null  and title != ''"> and a.title like concat('%', #{title}, '%')</if>
@@ -160,4 +168,47 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ( #{item.id}, #{item.trainingId}, #{item.playerId}, #{item.attendanceStatus}, #{item.createTime})
         </foreach>
     </insert>
+
+    <insert id="insertScheduleEventIfAbsent" parameterType="FootballTraining">
+        insert into football_schedule_event
+            (training_id, title, event_type, start_time, end_time, location, description,
+             status, create_by, create_time, del_flag)
+        select #{id}, #{title}, 1, #{startTime}, #{endTime}, #{venue}, #{description},
+               #{status}, COALESCE(#{createBy}, 'system'), COALESCE(#{createTime}, NOW()), '0'
+        where not exists (
+            select 1 from football_schedule_event where training_id = #{id}
+        )
+    </insert>
+
+    <update id="updateScheduleEventByTrainingId" parameterType="FootballTraining">
+        update football_schedule_event
+        set title = #{title},
+            event_type = 1,
+            start_time = #{startTime},
+            end_time = #{endTime},
+            location = #{venue},
+            description = #{description},
+            status = #{status},
+            update_by = #{updateBy},
+            update_time = #{updateTime},
+            del_flag = '0'
+        where training_id = #{id}
+    </update>
+
+    <delete id="deleteSchedulePlayerByTrainingIds">
+        delete sp
+        from football_schedule_player sp
+        inner join football_schedule_event se on se.id = sp.event_id
+        where se.training_id in
+        <foreach item="trainingId" collection="array" open="(" separator="," close=")">
+            #{trainingId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteScheduleEventByTrainingIds">
+        delete from football_schedule_event where training_id in
+        <foreach item="trainingId" collection="array" open="(" separator="," close=")">
+            #{trainingId}
+        </foreach>
+    </delete>
 </mapper>

@@ -43,6 +43,17 @@ public class MatchController extends BaseController
     }
 
     /**
+     * 查询首页下一场比赛
+     */
+    @PreAuthorize("@ss.hasPermi('match:match:list')")
+    @GetMapping("/next")
+    @ApiOperation("查询下一场比赛")
+    public AjaxResult nextMatch()
+    {
+        return success(matchService.selectNextMatch());
+    }
+
+    /**
      * 查询比赛管理列表
      */
     @PreAuthorize("@ss.hasPermi('match:match:list')")

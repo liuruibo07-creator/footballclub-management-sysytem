@@ -23,6 +23,11 @@ public interface MatchMapper
     public List<Match> selectCompletedLeagueMatches(@Param("season") String season);
 
     /**
+     * 查询当前时间之后最早一场未完赛比赛
+     */
+    public Match selectNextMatch();
+
+    /**
      * 查询扣分
      */
     public Integer selectPointsDeduction(@Param("season") String season, @Param("competitionName") String competitionName);

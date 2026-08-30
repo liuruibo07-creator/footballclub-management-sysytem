@@ -36,6 +36,13 @@ public interface IMatchService
     public SeasonOverview selectSeasonOverview();
 
     /**
+     * 查询下一场比赛
+     *
+     * @return 下一场未完赛比赛；没有时返回 null
+     */
+    public Match selectNextMatch();
+
+    /**
      * 新增比赛管理
      * 
      * @param match 比赛管理

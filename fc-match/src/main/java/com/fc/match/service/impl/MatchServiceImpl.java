@@ -103,6 +103,12 @@ public class MatchServiceImpl implements IMatchService
         return overview;
     }
 
+    @Override
+    public Match selectNextMatch()
+    {
+        return matchMapper.selectNextMatch();
+    }
+
     private Map<String, TeamStanding> buildStandings(List<Match> matches)
     {
         Map<String, TeamStanding> standings = new HashMap<>();

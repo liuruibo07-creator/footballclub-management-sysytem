@@ -59,6 +59,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by round_no asc, match_date asc, id asc
     </select>
 
+    <select id="selectNextMatch" resultMap="MatchResult">
+        <include refid="selectMatchVo"/>
+        where status in (0, 2)
+          and match_date &gt;= now()
+          and del_flag = '0'
+        order by match_date asc, id asc
+        limit 1
+    </select>
+
     <select id="selectPointsDeduction" resultType="int">
         select coalesce(max(points_deduction), 0)
         from football_season
