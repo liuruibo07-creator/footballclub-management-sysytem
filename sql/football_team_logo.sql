@@ -49,13 +49,33 @@ INSERT IGNORE INTO `football_team_logo` (`team_name`, `del_flag`) VALUES
 ('辽宁铁人楠波湾','0');
 
 -- ------------------------------------------------------------
--- 3. 回填4支已上传OSS的队徽URL(2026-08-30已上传并验证公共可读)
+-- 3. 回填全部17支已上传OSS的队徽URL(2026-08-30已上传并验证公共可读)
 --    执行方式: 直接重跑整个脚本即可(建表/插入均可重复执行, UPDATE幂等)
 -- ------------------------------------------------------------
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a9400a013658c98cba5258b.jpg',
+       `update_time` = NOW()
+ WHERE `team_name` = '兰州陇原竞技' AND `del_flag` = '0';
+
 UPDATE `football_team_logo`
    SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93ee0113657fb6434f12e1.png',
        `update_time` = NOW()
  WHERE `team_name` = '天津津门虎' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fdfb13658c98cba5257f.png',
+       `update_time` = NOW()
+ WHERE `team_name` = '深圳新鹏城' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fe1113658c98cba52580.png',
+       `update_time` = NOW()
+ WHERE `team_name` = '云南玉昆' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fe4113658c98cba52581.png',
+       `update_time` = NOW()
+ WHERE `team_name` = '北京国安' AND `del_flag` = '0';
 
 UPDATE `football_team_logo`
    SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93ee2313657fb6434f12e2.png',
@@ -63,12 +83,57 @@ UPDATE `football_team_logo`
  WHERE `team_name` = '青岛西海岸' AND `del_flag` = '0';
 
 UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93ee2313657fb6434f12e4.png',
+       `update_time` = NOW()
+ WHERE `team_name` = '浙江俱乐部绿城' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fe5613658c98cba52582.jpg',
+       `update_time` = NOW()
+ WHERE `team_name` = '上海海港' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fe7113658c98cba52583.jpg',
+       `update_time` = NOW()
+ WHERE `team_name` = '重庆铜梁龙' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93feb413658c98cba52584.jpg',
+       `update_time` = NOW()
+ WHERE `team_name` = '上海申花' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93febd13658c98cba52585.png',
+       `update_time` = NOW()
+ WHERE `team_name` = '青岛海牛' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
    SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93ee2313657fb6434f12e3.png',
        `update_time` = NOW()
  WHERE `team_name` = '山东泰山' AND `del_flag` = '0';
 
 UPDATE `football_team_logo`
-   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93ee2313657fb6434f12e4.png',
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fec813658c98cba52586.jpg',
        `update_time` = NOW()
- WHERE `team_name` = '浙江俱乐部绿城' AND `del_flag` = '0';
+ WHERE `team_name` = '武汉三镇' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fed113658c98cba52587.jpg',
+       `update_time` = NOW()
+ WHERE `team_name` = '成都蓉城' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fee013658c98cba52588.jpg',
+       `update_time` = NOW()
+ WHERE `team_name` = '河南俱乐部彩陶坊' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93feef13658c98cba52589.png',
+       `update_time` = NOW()
+ WHERE `team_name` = '大连英博海发' AND `del_flag` = '0';
+
+UPDATE `football_team_logo`
+   SET `logo_url` = 'https://football-team-logo.oss-cn-beijing.aliyuncs.com/logo/2026/08/30/6a93fefc13658c98cba5258a.jpg',
+       `update_time` = NOW()
+ WHERE `team_name` = '辽宁铁人楠波湾' AND `del_flag` = '0';
 -- ------------------------------------------------------------
