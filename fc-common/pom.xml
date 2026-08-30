@@ -101,6 +101,12 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
+        <!-- Jaxb运行时(JDK9+调用aliyun-sdk-oss必需,缺失会NoClassDefFoundError) -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.3</version>
+        </dependency>
 
         <!-- redis 缓存操作 -->
         <dependency>

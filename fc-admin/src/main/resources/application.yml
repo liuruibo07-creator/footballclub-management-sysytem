@@ -127,3 +127,18 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+# 阿里云OSS存储配置(队徽文件上传)
+dromara:
+  x-file-storage:
+    default-platform: aliyun-oss-1
+    thumbnail-suffix: ".jpg" # 缩略图后缀
+    aliyun-oss:
+      - platform: aliyun-oss-1
+        enable-storage: true
+        access-key: ${OSS_ACCESS_KEY_ID}
+        secret-key: ${OSS_ACCESS_KEY_SECRET}
+        end-point: oss-cn-beijing.aliyuncs.com             # 华北2(北京)地域endpoint
+        bucket-name: football-team-logo
+        domain: https://football-team-logo.oss-cn-beijing.aliyuncs.com/   # 末尾/必须(x-file-storage直接拼接domain+base-path)
+        base-path: logo/
