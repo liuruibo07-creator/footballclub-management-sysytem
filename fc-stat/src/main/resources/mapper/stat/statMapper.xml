@@ -93,9 +93,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from football_player_season_stat s
         <where>
             <if test="season != null and season != ''"> and s.season = #{season}</if>
+            <if test="competition != null and competition != ''"> and s.competition = #{competition}</if>
         </where>
         group by s.season, s.competition
         order by s.season desc, s.competition
+    </select>
+
+    <!-- 球队已完赛场次(按赛季+赛事分组, 用于计算场均进球; 只统计有球员数据的赛事, 保证分子分母口径一致) -->
+    <select id="selectTeamMatchCount" parameterType="stat" resultType="java.util.Map">
+        select m.season,
+               m.competition_name as competition,
+               count(1) as matchCount
+        from football_match m
+        where m.del_flag = '0'
+          and m.status = 1
+          and m.home_score is not null
+          and m.away_score is not null
+          and exists (
+              select 1 from football_player_season_stat s
+              where s.season = m.season
+                and s.competition = m.competition_name
+          )
+          <if test="season != null and season != ''"> and m.season = #{season}</if>
+          <if test="competition != null and competition != ''"> and m.competition_name = #{competition}</if>
+        group by m.season, m.competition_name
+        order by m.season desc, m.competition_name
     </select>
 
     <!-- 球员对比 -->
