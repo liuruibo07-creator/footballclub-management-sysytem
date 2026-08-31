@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="jerseyNumber"    column="jersey_number"    />
         <result property="nameCn"    column="name_cn"    />
+        <result property="avatarUrl"    column="avatar_url"    />
         <result property="position"    column="position"    />
         <result property="nationality"    column="nationality"    />
         <result property="birthDate"    column="birth_date"    />
@@ -46,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectFootballPlayerVo">
-        select p.id, p.jersey_number, p.name_cn, p.position, p.nationality, p.birth_date,
+        select p.id, p.jersey_number, p.name_cn, p.avatar_url, p.position, p.nationality, p.birth_date,
                p.height, p.preferred_foot, p.status, p.registration_note, p.user_id,
                p.source_url, p.source_as_of, p.create_by, p.create_time, p.update_by,
                p.update_time, p.del_flag, p.remark, c.end_date,
@@ -117,6 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="jerseyNumber != null">jersey_number,</if>
             <if test="nameCn != null and nameCn != ''">name_cn,</if>
+            <if test="avatarUrl != null and avatarUrl != ''">avatar_url,</if>
             <if test="position != null and position != ''">position,</if>
             <if test="nationality != null and nationality != ''">nationality,</if>
             <if test="birthDate != null">birth_date,</if>
@@ -137,6 +139,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="jerseyNumber != null">#{jerseyNumber},</if>
             <if test="nameCn != null and nameCn != ''">#{nameCn},</if>
+            <if test="avatarUrl != null and avatarUrl != ''">#{avatarUrl},</if>
             <if test="position != null and position != ''">#{position},</if>
             <if test="nationality != null and nationality != ''">#{nationality},</if>
             <if test="birthDate != null">#{birthDate},</if>
@@ -161,6 +164,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="jerseyNumber != null">jersey_number = #{jerseyNumber},</if>
             <if test="nameCn != null and nameCn != ''">name_cn = #{nameCn},</if>
+            <if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
             <if test="position != null and position != ''">position = #{position},</if>
             <if test="nationality != null and nationality != ''">nationality = #{nationality},</if>
             <if test="birthDate != null">birth_date = #{birthDate},</if>

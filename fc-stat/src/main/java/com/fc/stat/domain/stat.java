@@ -76,6 +76,9 @@ public class stat extends BaseEntity
     /** 球员姓名（关联查询） */
     private String playerName;
 
+    /** 球员头像地址（关联查询） */
+    private String avatarUrl;
+
     /** 球衣号码（关联查询） */
     private Long jerseyNumber;
 

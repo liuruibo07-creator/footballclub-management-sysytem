@@ -24,6 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
         <result property="playerName"    column="player_name"    />
+        <result property="avatarUrl"    column="avatar_url"    />
         <result property="jerseyNumber"    column="jersey_number"    />
         <result property="position"    column="position"    />
         <result property="nationality"    column="nationality"    />
@@ -34,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select s.id, s.player_id, s.season, s.competition, s.appearances, s.starts,
                s.minutes_played, s.goals, s.assists, s.yellow_cards, s.red_cards,
                s.stat_as_of, s.source_url, s.create_by, s.create_time, s.update_by, s.update_time, s.remark,
-               p.name_cn as player_name, p.jersey_number,
+               p.name_cn as player_name, p.avatar_url, p.jersey_number,
                IFNULL(p.position, '未知') as position,
                p.nationality,
                IFNULL(p.status, '未知') as player_status
@@ -111,7 +112,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 球员下拉选项（查football_player表） -->
     <select id="selectPlayerOptions" resultType="java.util.Map">
-        select id, name_cn as nameCn, jersey_number as jerseyNumber, position
+        select id, name_cn as nameCn, avatar_url as avatarUrl, jersey_number as jerseyNumber, position
         from football_player
         where del_flag = '0' and status = '活跃'
         order by jersey_number

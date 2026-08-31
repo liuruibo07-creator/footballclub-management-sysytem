@@ -35,6 +35,9 @@ public class FootballPlayer extends BaseEntity
     @Excel(name = "姓名")
     private String nameCn;
 
+    /** 球员头像地址 */
+    private String avatarUrl;
+
     /** 位置 */
     @Excel(name = "位置")
     private String position;
