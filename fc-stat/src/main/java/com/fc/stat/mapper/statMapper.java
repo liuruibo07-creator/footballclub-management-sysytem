@@ -31,6 +31,9 @@ public interface statMapper
     /** 查询球队赛季汇总 */
     public List<stat> selectTeamSeasonStats(stat stat);
 
+    /** 查询球队已完赛场次 */
+    public List<Map<String, Object>> selectTeamMatchCount(stat stat);
+
     /** 查询球员对比数据 */
     public List<stat> selectCompareStats(@Param("playerIds") Long[] playerIds, @Param("season") String season, @Param("competition") String competition);
 

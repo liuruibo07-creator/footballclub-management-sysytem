@@ -1,5 +1,6 @@
 package com.fc.stat.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
@@ -101,7 +102,11 @@ public class statController extends BaseController
     public AjaxResult teamSummary(stat stat)
     {
         List<stat> list = statService.selectTeamSeasonStats(stat);
-        return success(list);
+        List<Map<String, Object>> matchCounts = statService.selectTeamMatchCount(stat);
+        Map<String, Object> data = new HashMap<>();
+        data.put("list", list);
+        data.put("matchCounts", matchCounts);
+        return success(data);
     }
 
     @PreAuthorize("@ss.hasPermi('stat:stat:list')")

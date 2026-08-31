@@ -72,6 +72,12 @@ public class statServiceImpl implements IstatService
     }
 
     @Override
+    public List<Map<String, Object>> selectTeamMatchCount(stat stat)
+    {
+        return statMapper.selectTeamMatchCount(stat);
+    }
+
+    @Override
     public List<stat> selectCompareStats(Long[] playerIds, String season, String competition)
     {
         return statMapper.selectCompareStats(playerIds, season, competition);
