@@ -28,12 +28,69 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="com.fc.pp.domain.vo.FootballPlayerVo" id="FootballPlayerVoResult" extends="FootballPlayerResult">
         <result property="endDate" column="end_date"/>
+        <result property="statAsOf" column="stat_as_of"/>
+        <result property="appearances" column="appearances"/>
+        <result property="starts" column="starts"/>
+        <result property="minutesPlayed" column="minutes_played"/>
+        <result property="goals" column="goals"/>
+        <result property="assists" column="assists"/>
+        <result property="yellowCards" column="yellow_cards"/>
+        <result property="redCards" column="red_cards"/>
+        <result property="completedTrainingCount" column="completed_training_count"/>
+        <result property="missedTrainingCount" column="missed_training_count"/>
+        <result property="lastTrainingDate" column="last_training_date"/>
+        <result property="injuryType" column="injury_type"/>
+        <result property="injuryLocation" column="injury_location"/>
+        <result property="recoveryStatus" column="recovery_status"/>
+        <result property="expectedReturnDate" column="expected_return_date"/>
     </resultMap>
 
     <sql id="selectFootballPlayerVo">
-        select p.id, p.jersey_number, p.name_cn, p.position, p.nationality, p.birth_date, p.height, p.preferred_foot, p.status, p.registration_note, p.user_id, p.source_url, p.source_as_of, p.create_by, p.create_time, p.update_by, p.update_time, p.del_flag, p.remark, c.end_date
+        select p.id, p.jersey_number, p.name_cn, p.position, p.nationality, p.birth_date,
+               p.height, p.preferred_foot, p.status, p.registration_note, p.user_id,
+               p.source_url, p.source_as_of, p.create_by, p.create_time, p.update_by,
+               p.update_time, p.del_flag, p.remark, c.end_date,
+               ss.stat_as_of, ss.appearances, ss.starts, ss.minutes_played, ss.goals,
+               ss.assists, ss.yellow_cards, ss.red_cards,
+               (select count(*)
+                  from football_training t
+                 where t.status = 1 and t.del_flag = '0') as completed_training_count,
+               (select count(*)
+                  from football_training_player tp
+                  join football_training t on t.id = tp.training_id
+                 where tp.player_id = p.id
+                   and tp.attendance_status in (2, 3)
+                   and t.status = 1
+                   and t.del_flag = '0') as missed_training_count,
+               (select max(t.start_time)
+                  from football_training t
+                 where t.status = 1 and t.del_flag = '0') as last_training_date,
+               i.injury_type, i.injury_location, i.recovery_status, i.expected_return_date
         from football_player p
         left join football_player_contract c on p.id = c.player_id
+        left join (
+            select s.player_id,
+                   max(s.stat_as_of) as stat_as_of,
+                   sum(coalesce(s.appearances, 0)) as appearances,
+                   sum(coalesce(s.starts, 0)) as starts,
+                   sum(coalesce(s.minutes_played, 0)) as minutes_played,
+                   sum(coalesce(s.goals, 0)) as goals,
+                   sum(coalesce(s.assists, 0)) as assists,
+                   sum(coalesce(s.yellow_cards, 0)) as yellow_cards,
+                   sum(coalesce(s.red_cards, 0)) as red_cards
+              from football_player_season_stat s
+             where s.season = (select max(s2.season) from football_player_season_stat s2)
+             group by s.player_id
+        ) ss on ss.player_id = p.id
+        left join football_injury i on i.id = (
+            select i2.id
+              from football_injury i2
+             where i2.player_id = p.id
+               and i2.recovery_status in (0, 1, 2)
+               and i2.del_flag = '0'
+             order by i2.injury_date desc, i2.id desc
+             limit 1
+        )
     </sql>
 
     <select id="selectFootballPlayerList" parameterType="FootballPlayer" resultMap="FootballPlayerVoResult">
@@ -45,7 +102,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="birthDate != null "> and p.birth_date = #{birthDate}</if>
             <if test="preferredFoot != null  and preferredFoot != ''"> and p.preferred_foot = #{preferredFoot}</if>
             <if test="status != null  and status != ''"> and p.status = #{status}</if>
+            and p.del_flag = '0'
         </where>
+        order by p.position, p.jersey_number
     </select>
 
     <select id="selectFootballPlayerById" parameterType="Long" resultMap="FootballPlayerVoResult">

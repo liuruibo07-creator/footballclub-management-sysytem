@@ -1,18 +1,19 @@
 package com.fc.finance.service.impl;
 
-import java.util.List;
 import com.fc.common.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.fc.finance.mapper.FinanceRecordMapper;
 import com.fc.finance.domain.FinanceRecord;
 import com.fc.finance.domain.vo.FinanceSummary;
+import com.fc.finance.mapper.FinanceRecordMapper;
 import com.fc.finance.service.IFinanceRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 财务收支Service业务层处理
  * 
- * @author ruoyi
+ * @author lrb
  * @date 2026-08-26
  */
 @Service

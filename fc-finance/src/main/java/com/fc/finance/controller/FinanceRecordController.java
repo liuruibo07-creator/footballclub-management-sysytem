@@ -1,32 +1,26 @@
 package com.fc.finance.controller;
 
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.fc.common.annotation.Log;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import com.fc.common.core.controller.BaseController;
 import com.fc.common.core.domain.AjaxResult;
+import com.fc.common.core.page.TableDataInfo;
 import com.fc.common.enums.BusinessType;
+import com.fc.common.utils.poi.ExcelUtil;
 import com.fc.finance.domain.FinanceRecord;
 import com.fc.finance.service.IFinanceRecordService;
-import com.fc.common.utils.poi.ExcelUtil;
-import com.fc.common.core.page.TableDataInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 财务收支Controller
  * 
- * @author ruoyi
+ * @author lrb
  * @date 2026-08-26
  */
 @RestController
@@ -45,8 +39,11 @@ public class FinanceRecordController extends BaseController
     @ApiOperation("查询财务收支列表")
     public TableDataInfo list(FinanceRecord financeRecord)
     {
+        // 分页查询,通过 BaseController.startPage() 方法开启分页
+        // 通过 BaseController.getDataTable() 方法返回分页数据
         startPage();
         List<FinanceRecord> list = financeRecordService.selectFinanceRecordList(financeRecord);
+        // 返回分页数据，包含总记录数和当前页数据，通过 BaseController.getDataTable() 方法返回分页数据以及总记录数
         return getDataTable(list);
     }
 

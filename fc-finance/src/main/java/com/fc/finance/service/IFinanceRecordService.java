@@ -1,13 +1,14 @@
 package com.fc.finance.service;
 
-import java.util.List;
 import com.fc.finance.domain.FinanceRecord;
 import com.fc.finance.domain.vo.FinanceSummary;
+
+import java.util.List;
 
 /**
  * 财务收支Service接口
  * 
- * @author ruoyi
+ * @author lrb
  * @date 2026-08-26
  */
 public interface IFinanceRecordService 

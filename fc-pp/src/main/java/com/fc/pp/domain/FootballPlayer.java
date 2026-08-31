@@ -13,7 +13,7 @@ import java .util.Date;
 /**
  * 球员档案对象 football_player
  * 
- * @author ruoyi
+ * @author lrb
  * @date 2026-08-26
  */
 @Data

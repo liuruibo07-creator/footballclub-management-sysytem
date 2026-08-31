@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 球员档案Service接口
  * 
- * @author ruoyi
+ * @author lrb
  * @date 2026-08-26
  */
 public interface IFootballPlayerService

@@ -1,20 +1,19 @@
 package com.fc.finance.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.fc.common.annotation.Excel;
 import com.fc.common.core.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 /**
  * 财务收支对象 football_finance_record
  * 
- * @author ruoyi
+ * @author lrb
  * @date 2026-08-26
  */
 @Data

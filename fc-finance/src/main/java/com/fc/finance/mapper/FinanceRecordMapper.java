@@ -1,13 +1,14 @@
 package com.fc.finance.mapper;
 
-import java.util.List;
 import com.fc.finance.domain.FinanceRecord;
 import com.fc.finance.domain.vo.FinanceSummary;
+
+import java.util.List;
 
 /**
  * 财务收支Mapper接口
  * 
- * @author ruoyi
+ * @author lrb
  * @date 2026-08-26
  */
 public interface FinanceRecordMapper 
