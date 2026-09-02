@@ -1,16 +1,17 @@
 package com.fc.system.service.impl;
 
-import java.util.List;
 import com.fc.common.utils.DateUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import com.fc.common.utils.StringUtils;
-import org.springframework.transaction.annotation.Transactional;
+import com.fc.system.domain.FootballTraining;
 import com.fc.system.domain.FootballTrainingPlayer;
 import com.fc.system.mapper.FootballTrainingMapper;
-import com.fc.system.domain.FootballTraining;
 import com.fc.system.service.IFootballTrainingService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 训练计划Service业务层处理
@@ -92,7 +93,7 @@ public class FootballTrainingServiceImpl implements IFootballTrainingService
     {
         if (StringUtils.isEmpty(footballTraining.getCreateBy()))
         {
-            footballTraining.setCreateBy(“system”);
+            footballTraining.setCreateBy("system");
         }
         footballTraining.setCreateTime(DateUtils.getNowDate());
         int rows = footballTrainingMapper.insertFootballTraining(footballTraining);
