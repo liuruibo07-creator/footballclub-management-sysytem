@@ -2,8 +2,20 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    训练计划 Mapper XML
+    涉及表：
+    - football_training（训练主表）
+    - football_training_player（训练缺席球员子表，只存缺席/请假球员）
+    - football_player（球员主表，用于关联查询姓名和位置）
+    - football_schedule_event（日程事件表，训练模块通过跨表SQL直接写入/更新/删除）
+    - football_schedule_player（日程参与人表，删除训练时级联清理）
+-->
 <mapper namespace="com.fc.system.mapper.FootballTrainingMapper">
     
+    <!-- ==================== ResultMap 定义 ==================== -->
+    
+    <!-- 训练主表结果映射：包含两个非数据库字段 participantCount 和 attendanceRate，由列表查询的子查询计算 -->
     <resultMap type="FootballTraining" id="FootballTrainingResult">
         <result property="id"    column="id"    />
         <result property="season"    column="season"    />
@@ -21,28 +33,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="remark"    column="remark"    />
+        <!-- 以下两个字段不在 football_training 表中，由列表查询的 SQL 子查询实时计算 -->
         <result property="participantCount"    column="participant_count"    />
         <result property="attendanceRate"    column="attendance_rate"    />
     </resultMap>
 
+    <!-- 训练详情结果映射：继承主表映射，额外包含一对多子表（缺席球员列表） -->
     <resultMap id="FootballTrainingFootballTrainingPlayerResult" type="FootballTraining" extends="FootballTrainingResult">
         <collection property="footballTrainingPlayerList" notNullColumn="sub_id" javaType="java.util.List" resultMap="FootballTrainingPlayerResult" />
     </resultMap>
 
+    <!-- 缺席球员子表结果映射：列名带 sub_ 前缀，避免与主表列名冲突 -->
     <resultMap type="FootballTrainingPlayer" id="FootballTrainingPlayerResult">
         <result property="id"    column="sub_id"    />
         <result property="trainingId"    column="sub_training_id"    />
         <result property="playerId"    column="sub_player_id"    />
         <result property="attendanceStatus"    column="sub_attendance_status"    />
         <result property="createTime"    column="sub_create_time"    />
+        <!-- 以下两个字段由 LEFT JOIN football_player 查出 -->
         <result property="playerName"    column="sub_player_name"    />
         <result property="position"    column="sub_position"    />
     </resultMap>
 
+    <!-- ==================== 基础查询 SQL 片段 ==================== -->
+    
     <sql id="selectFootballTrainingVo">
         select id, season, title, training_type, start_time, end_time, venue, description, training_goal, status, create_by, create_time, update_by, update_time, del_flag, remark from football_training
     </sql>
 
+    <!-- ==================== 列表查询（含出勤率计算） ==================== -->
+    
+    <!--
+        查询训练计划列表（分页）
+        特点：使用关联子查询实时计算 participantCount 和 attendanceRate
+        - participantCount = football_player 表总行数（即全部球员数）
+        - attendanceRate = (全部球员数 - 缺席球员数) / 全部球员数
+        - 状态为 0（已计划）的训练直接显示 "0%"
+        - GREATEST(..., 0) 防止缺席人数超过总人数时出现负数
+    -->
     <select id="selectFootballTrainingList" parameterType="FootballTraining" resultMap="FootballTrainingResult">
         select a.id, a.season, a.title, a.training_type, a.start_time, a.end_time, a.venue,
                a.description, a.training_goal, a.status, a.create_by, a.create_time,
@@ -70,6 +98,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by a.start_time asc
     </select>
     
+    <!-- ==================== 详情查询（三表 LEFT JOIN） ==================== -->
+    
+    <!--
+        查询训练计划详情
+        三表关联：football_training → football_training_player → football_player
+        返回训练主表 + 缺席球员子表（含球员姓名和位置）
+        使用 LEFT JOIN 保证即使没有缺席球员也能返回训练主表数据
+    -->
     <select id="selectFootballTrainingById" parameterType="Long" resultMap="FootballTrainingFootballTrainingPlayerResult">
         select a.id, a.season, a.title, a.training_type, a.start_time, a.end_time, a.venue, a.description, a.training_goal, a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.remark,
  b.id as sub_id, b.training_id as sub_training_id, b.player_id as sub_player_id, b.attendance_status as sub_attendance_status, b.create_time as sub_create_time,
@@ -80,6 +116,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where a.id = #{id}
     </select>
         
+    <!-- ==================== 训练主表 CRUD ==================== -->
+    
+    <!-- 新增训练：useGeneratedKeys="true" 将自增主键回填到参数对象的 id 属性 -->
     <insert id="insertFootballTraining" parameterType="FootballTraining" useGeneratedKeys="true" keyProperty="id">
         insert into football_training
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -118,6 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <!-- 修改训练：动态 SET，只更新非空字段 -->
     <update id="updateFootballTraining" parameterType="FootballTraining">
         update football_training
         <trim prefix="SET" suffixOverrides=",">
@@ -140,10 +180,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
+    <!-- 删除训练（单条） -->
     <delete id="deleteFootballTrainingById" parameterType="Long">
         delete from football_training where id = #{id}
     </delete>
 
+    <!-- 删除训练（批量） -->
     <delete id="deleteFootballTrainingByIds" parameterType="String">
         delete from football_training where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
@@ -151,6 +193,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     
+    <!-- ==================== 训练缺席球员子表 CRUD ==================== -->
+    
+    <!-- 批量删除缺席球员（按训练ID数组） -->
     <delete id="deleteFootballTrainingPlayerByTrainingIds" parameterType="String">
         delete from football_training_player where training_id in 
         <foreach item="trainingId" collection="array" open="(" separator="," close=")">
@@ -158,10 +203,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <!-- 删除单条训练的所有缺席球员 -->
     <delete id="deleteFootballTrainingPlayerByTrainingId" parameterType="Long">
         delete from football_training_player where training_id = #{trainingId}
     </delete>
 
+    <!-- 批量插入缺席球员：使用 foreach 拼接 VALUES 多行插入 -->
     <insert id="batchFootballTrainingPlayer">
         insert into football_training_player( id, training_id, player_id, attendance_status, create_time) values
 		<foreach item="item" index="index" collection="list" separator=",">
@@ -169,6 +216,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </insert>
 
+    <!-- ==================== 跨表同步 SQL（训练 → 日程） ==================== -->
+    
+    <!--
+        幂等插入日程事件
+        逻辑：如果 football_schedule_event 中还没有 training_id = #{id} 的记录，则插入一条。
+        使用 INSERT ... SELECT ... WHERE NOT EXISTS 实现幂等性，避免重复插入。
+        字段映射：
+        - training.id → schedule_event.training_id
+        - training.title → schedule_event.title
+        - event_type 固定为 1（训练类型）
+        - training.startTime → schedule_event.start_time
+        - training.endTime → schedule_event.end_time
+        - training.venue → schedule_event.location
+        - training.description → schedule_event.description
+        - training.status → schedule_event.status
+        - COALESCE 用于处理 null 值的默认值
+    -->
     <insert id="insertScheduleEventIfAbsent" parameterType="FootballTraining">
         insert into football_schedule_event
             (training_id, title, event_type, start_time, end_time, location, description,
@@ -180,6 +244,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         )
     </insert>
 
+    <!--
+        无条件更新日程事件
+        逻辑：将训练的最新字段同步到日程表，无论日程是否存在都会执行 UPDATE。
+        配合 insertScheduleEventIfAbsent 使用：先保证记录存在，再更新字段值。
+        注意：del_flag 被重置为 '0'，防止日程被误删后无法恢复。
+    -->
     <update id="updateScheduleEventByTrainingId" parameterType="FootballTraining">
         update football_schedule_event
         set title = #{title},
@@ -195,6 +265,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where training_id = #{id}
     </update>
 
+    <!--
+        级联删除日程参与人
+        逻辑：通过 INNER JOIN 找到 training_id 对应的 schedule_event，再删除其 schedule_player。
+        因为 schedule_player 是通过 event_id 关联的，不是直接关联 training_id，所以需要 JOIN。
+    -->
     <delete id="deleteSchedulePlayerByTrainingIds">
         delete sp
         from football_schedule_player sp
@@ -205,6 +280,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
+    <!-- 删除日程事件（按 training_id 数组）
+        逻辑：通过 training_id 批量删除对应的 schedule_event。
+        使用 WHERE IN 子句实现批量删除。
+        注意：del_flag 被重置为 '0'，防止日程被误删后无法恢复。
+    -->
     <delete id="deleteScheduleEventByTrainingIds">
         delete from football_schedule_event where training_id in
         <foreach item="trainingId" collection="array" open="(" separator="," close=")">

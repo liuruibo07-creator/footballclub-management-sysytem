@@ -3,12 +3,24 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
-    Tables used in this mapper:
-    - football_schedule_event (id, match_id, training_id, title, event_type, start_time, end_time, location, description, status, create_by, create_time, update_by, update_time, del_flag, remark)
-    - football_schedule_player (id, event_id, player_id, create_time)
+    球队日程 Mapper XML
+    涉及表：
+    - football_schedule_event (日程主表)
+      字段：id, match_id, training_id, title, event_type, start_time, end_time,
+            location, description, status, create_by, create_time, update_by, update_time, del_flag, remark
+    - football_schedule_player (日程参与球员子表)
+      字段：id, event_id, player_id, create_time
+
+    说明：
+    1. 本 Mapper 仅操作上述两张表，不涉及跨模块表操作。
+    2. 训练模块的 Mapper 会主动同步数据到 football_schedule_event，但本 Mapper 不反向同步。
+    3. 日程是整个系统的"统一时间线"，汇聚比赛(0)、训练(1)、会议(2)三种事件。
 -->
 <mapper namespace="com.fc.system.mapper.FootballScheduleEventMapper">
-    
+
+    <!-- ==================== ResultMap 定义 ==================== -->
+
+    <!-- 日程主表结果映射 -->
     <resultMap type="FootballScheduleEvent" id="FootballScheduleEventResult">
         <result property="id"    column="id"    />
         <result property="matchId"    column="match_id"    />
@@ -28,10 +40,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="remark"    column="remark"    />
     </resultMap>
 
+    <!-- 日程主表 + 参与球员子表（一对多）结果映射，用于详情查询 -->
     <resultMap id="FootballScheduleEventFootballSchedulePlayerResult" type="FootballScheduleEvent" extends="FootballScheduleEventResult">
         <collection property="footballSchedulePlayerList" notNullColumn="sub_id" javaType="java.util.List" resultMap="FootballSchedulePlayerResult" />
     </resultMap>
 
+    <!-- 日程参与球员子表结果映射（sub_ 前缀避免与主表列名冲突） -->
     <resultMap type="FootballSchedulePlayer" id="FootballSchedulePlayerResult">
         <result property="id"    column="sub_id"    />
         <result property="eventId"    column="sub_event_id"    />
@@ -39,13 +53,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="sub_create_time"    />
     </resultMap>
 
+    <!-- ==================== 公共 SQL 片段 ==================== -->
+
+    <!-- 日程主表基础查询列（不含子表） -->
     <sql id="selectFootballScheduleEventVo">
         select id, match_id, training_id, title, event_type, start_time, end_time, location, description, status, create_by, create_time, update_by, update_time, del_flag, remark from football_schedule_event
     </sql>
 
+    <!-- ==================== 日程主表查询 ==================== -->
+
+    <!--
+        条件查询日程列表
+        筛选条件：
+        - title：精确匹配（非模糊）
+        - eventType：精确匹配
+        - beginStartTime + endStartTime：开始时间范围查询（BETWEEN）
+        - status：精确匹配
+        排序：start_time ASC, id ASC（按时间升序，相同时间按 ID 升序）
+    -->
     <select id="selectFootballScheduleEventList" parameterType="FootballScheduleEvent" resultMap="FootballScheduleEventResult">
         <include refid="selectFootballScheduleEventVo"/>
-        <where>  
+        <where>
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="eventType != null  and eventType != ''"> and event_type = #{eventType}</if>
             <if test="beginStartTime != null and beginStartTime != '' and endStartTime != null and endStartTime != ''"> and start_time between #{beginStartTime} and #{endStartTime}</if>
@@ -55,6 +83,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by start_time asc, id asc
     </select>
 
+    <!--
+        查询首页待办日程（最多 limit 条）
+        筛选：status='0'（已安排/待办）且 del_flag='0'（未删除）
+        排序：start_time ASC（最近的优先），再按 id ASC
+        用途：首页 Dashboard 展示"待办日程"卡片
+    -->
     <select id="selectPendingScheduleEvents" resultMap="FootballScheduleEventResult">
         <include refid="selectFootballScheduleEventVo"/>
         where status = '0'
@@ -63,13 +97,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         limit #{limit}
     </select>
 
+    <!--
+        统计所有"已安排"状态的日程总数
+        用途：与 selectPendingScheduleEvents 配合，计算首页待办汇总的 remaining 字段
+    -->
     <select id="countPendingScheduleEvents" resultType="long">
         select count(1)
         from football_schedule_event
         where status = '0'
           and del_flag = '0'
     </select>
-    
+
+    <!--
+        查询单条日程详情（含参与球员子表）
+        通过 LEFT JOIN football_schedule_player 一并查出参与球员，
+        映射到 footballSchedulePlayerList 集合。
+        若某日程无参与球员，子表字段为 null，notNullColumn="sub_id" 保证集合为空而非包含空对象。
+    -->
     <select id="selectFootballScheduleEventById" parameterType="Long" resultMap="FootballScheduleEventFootballSchedulePlayerResult">
         select a.id, a.match_id, a.training_id, a.title, a.event_type, a.start_time, a.end_time, a.location, a.description, a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.remark,
  b.id as sub_id, b.event_id as sub_event_id, b.player_id as sub_player_id, b.create_time as sub_create_time
@@ -77,7 +121,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         left join football_schedule_player b on b.event_id = a.id
         where a.id = #{id}
     </select>
-        
+
+    <!-- ==================== 日程主表增删改 ==================== -->
+
+    <!--
+        新增日程主表记录
+        useGeneratedKeys=true：自增主键回填到参数对象的 id 属性
+        动态 SQL：仅插入非 null 的字段，null 字段使用数据库默认值
+    -->
     <insert id="insertFootballScheduleEvent" parameterType="FootballScheduleEvent" useGeneratedKeys="true" keyProperty="id">
         insert into football_schedule_event
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -116,6 +167,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <!--
+        修改日程主表记录（动态 SET）
+        仅更新非 null 的字段，null 字段保持原值不变
+    -->
     <update id="updateFootballScheduleEvent" parameterType="FootballScheduleEvent">
         update football_schedule_event
         <trim prefix="SET" suffixOverrides=",">
@@ -138,28 +193,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
+    <!-- ==================== 日程主表删除 ==================== -->
+
+    <!-- 删除单条日程（物理删除） -->
     <delete id="deleteFootballScheduleEventById" parameterType="Long">
         delete from football_schedule_event where id = #{id}
     </delete>
 
+    <!-- 批量删除日程 -->
     <delete id="deleteFootballScheduleEventByIds" parameterType="String">
-        delete from football_schedule_event where id in 
+        delete from football_schedule_event where id in
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
     </delete>
-    
+
+    <!-- ==================== 日程参与球员子表操作 ==================== -->
+
+    <!-- 按日程 ID 批量删除参与球员（用于级联删除日程时先清理子表） -->
     <delete id="deleteFootballSchedulePlayerByEventIds" parameterType="String">
-        delete from football_schedule_player where event_id in 
+        delete from football_schedule_player where event_id in
         <foreach item="eventId" collection="ids" open="(" separator="," close=")">
             #{eventId}
         </foreach>
     </delete>
 
+    <!-- 删除单条日程的所有参与球员（用于"先删后插"的更新策略） -->
     <delete id="deleteFootballSchedulePlayerByEventId" parameterType="Long">
         delete from football_schedule_player where event_id = #{eventId}
     </delete>
 
+    <!--
+        批量插入日程参与球员
+        使用 foreach 拼接多行 VALUES，一次性插入多条记录
+    -->
     <insert id="batchFootballSchedulePlayer">
         insert into football_schedule_player( id, event_id, player_id, create_time) values
 		<foreach item="item" index="index" collection="list" separator=",">
